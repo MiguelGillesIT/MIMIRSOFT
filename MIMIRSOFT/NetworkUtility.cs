@@ -4,6 +4,7 @@ public class NetworkUtility
 {
 	public NetworkUtility()
 	{
+
 	}
 
     public static string getSubnetAddress(string ipaddress, string mask)
