@@ -55,7 +55,6 @@
             this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.listView1 = new System.Windows.Forms.ListView();
             this.deviceName = new System.Windows.Forms.ColumnHeader();
             this.ipAddress = new System.Windows.Forms.ColumnHeader();
@@ -64,10 +63,21 @@
             this.status = new System.Windows.Forms.ColumnHeader();
             this.firstDetection = new System.Windows.Forms.ColumnHeader();
             this.lastDetection = new System.Windows.Forms.ColumnHeader();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.listView2 = new System.Windows.Forms.ListView();
+            this.processName = new System.Windows.Forms.ColumnHeader();
+            this.PID = new System.Windows.Forms.ColumnHeader();
+            this.protocol = new System.Windows.Forms.ColumnHeader();
+            this.localPort = new System.Windows.Forms.ColumnHeader();
+            this.localAddress = new System.Windows.Forms.ColumnHeader();
+            this.remotePort = new System.Windows.Forms.ColumnHeader();
+            this.remoteAddress = new System.Windows.Forms.ColumnHeader();
+            this.state = new System.Windows.Forms.ColumnHeader();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -291,16 +301,6 @@
             this.tabPage1.Text = "Réseau";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1050, 395);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Ports";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
             // listView1
             // 
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -354,6 +354,76 @@
             this.lastDetection.Text = "Dernière détection";
             this.lastDetection.Width = 150;
             // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.listView2);
+            this.tabPage2.Location = new System.Drawing.Point(4, 24);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(1050, 395);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Ports";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // listView2
+            // 
+            this.listView2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.processName,
+            this.PID,
+            this.protocol,
+            this.localPort,
+            this.localAddress,
+            this.remotePort,
+            this.remoteAddress,
+            this.state});
+            this.listView2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView2.Location = new System.Drawing.Point(3, 3);
+            this.listView2.Name = "listView2";
+            this.listView2.Size = new System.Drawing.Size(1044, 389);
+            this.listView2.TabIndex = 0;
+            this.listView2.UseCompatibleStateImageBehavior = false;
+            this.listView2.View = System.Windows.Forms.View.Details;
+            // 
+            // processName
+            // 
+            this.processName.Text = "Processus";
+            this.processName.Width = 100;
+            // 
+            // PID
+            // 
+            this.PID.Text = "PID";
+            this.PID.Width = 100;
+            // 
+            // protocol
+            // 
+            this.protocol.Text = "Protocol";
+            this.protocol.Width = 100;
+            // 
+            // localPort
+            // 
+            this.localPort.Text = "Port local";
+            this.localPort.Width = 100;
+            // 
+            // localAddress
+            // 
+            this.localAddress.Text = "Adresse locale";
+            this.localAddress.Width = 100;
+            // 
+            // remotePort
+            // 
+            this.remotePort.Text = "Port distant";
+            this.remotePort.Width = 100;
+            // 
+            // remoteAddress
+            // 
+            this.remoteAddress.Text = "Adresse distante";
+            this.remoteAddress.Width = 100;
+            // 
+            // state
+            // 
+            this.state.Text = "Etat";
+            this.state.Width = 100;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -373,6 +443,7 @@
             this.toolStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -415,5 +486,14 @@
         private ColumnHeader status;
         private ColumnHeader firstDetection;
         private ColumnHeader lastDetection;
+        private ListView listView2;
+        private ColumnHeader processName;
+        private ColumnHeader PID;
+        private ColumnHeader protocol;
+        private ColumnHeader localPort;
+        private ColumnHeader localAddress;
+        private ColumnHeader remotePort;
+        private ColumnHeader remoteAddress;
+        private ColumnHeader state;
     }
 }
