@@ -33,7 +33,7 @@
             this.fichierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lancerLeScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.carteRéseauToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.NetAdaptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.typeDeRéseauToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.iPV4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.iPV6ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,12 +47,12 @@
             this.aideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.àProposToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
+            this.startBtn = new System.Windows.Forms.ToolStripButton();
+            this.stopBtn = new System.Windows.Forms.ToolStripButton();
+            this.saveBtn = new System.Windows.Forms.ToolStripButton();
+            this.detailBtn = new System.Windows.Forms.ToolStripButton();
+            this.searchBtn = new System.Windows.Forms.ToolStripButton();
+            this.refreshBtn = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.listView1 = new System.Windows.Forms.ListView();
@@ -110,7 +110,7 @@
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.carteRéseauToolStripMenuItem,
+            this.NetAdaptToolStripMenuItem,
             this.typeDeRéseauToolStripMenuItem,
             this.protocoleDeTransportToolStripMenuItem,
             this.périodeDeRafraîchissementToolStripMenuItem});
@@ -118,11 +118,11 @@
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
             // 
-            // carteRéseauToolStripMenuItem
+            // NetAdaptToolStripMenuItem
             // 
-            this.carteRéseauToolStripMenuItem.Name = "carteRéseauToolStripMenuItem";
-            this.carteRéseauToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
-            this.carteRéseauToolStripMenuItem.Text = "Carte Réseau";
+            this.NetAdaptToolStripMenuItem.Name = "NetAdaptToolStripMenuItem";
+            this.NetAdaptToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.NetAdaptToolStripMenuItem.Text = "Carte Réseau";
             // 
             // typeDeRéseauToolStripMenuItem
             // 
@@ -135,12 +135,16 @@
             // 
             // iPV4ToolStripMenuItem
             // 
+            this.iPV4ToolStripMenuItem.Checked = true;
+            this.iPV4ToolStripMenuItem.CheckOnClick = true;
+            this.iPV4ToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.iPV4ToolStripMenuItem.Name = "iPV4ToolStripMenuItem";
             this.iPV4ToolStripMenuItem.Size = new System.Drawing.Size(97, 22);
             this.iPV4ToolStripMenuItem.Text = "IPV4";
             // 
             // iPV6ToolStripMenuItem
             // 
+            this.iPV6ToolStripMenuItem.CheckOnClick = true;
             this.iPV6ToolStripMenuItem.Name = "iPV6ToolStripMenuItem";
             this.iPV6ToolStripMenuItem.Size = new System.Drawing.Size(97, 22);
             this.iPV6ToolStripMenuItem.Text = "IPV6";
@@ -156,12 +160,14 @@
             // 
             // tCPToolStripMenuItem
             // 
+            this.tCPToolStripMenuItem.CheckOnClick = true;
             this.tCPToolStripMenuItem.Name = "tCPToolStripMenuItem";
             this.tCPToolStripMenuItem.Size = new System.Drawing.Size(97, 22);
             this.tCPToolStripMenuItem.Text = "TCP ";
             // 
             // uDPToolStripMenuItem
             // 
+            this.uDPToolStripMenuItem.CheckOnClick = true;
             this.uDPToolStripMenuItem.Name = "uDPToolStripMenuItem";
             this.uDPToolStripMenuItem.Size = new System.Drawing.Size(97, 22);
             this.uDPToolStripMenuItem.Text = "UDP";
@@ -178,18 +184,21 @@
             // 
             // sToolStripMenuItem
             // 
+            this.sToolStripMenuItem.CheckOnClick = true;
             this.sToolStripMenuItem.Name = "sToolStripMenuItem";
             this.sToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.sToolStripMenuItem.Text = "10 s";
             // 
             // sToolStripMenuItem1
             // 
+            this.sToolStripMenuItem1.CheckOnClick = true;
             this.sToolStripMenuItem1.Name = "sToolStripMenuItem1";
             this.sToolStripMenuItem1.Size = new System.Drawing.Size(94, 22);
             this.sToolStripMenuItem1.Text = "20 s";
             // 
             // sToolStripMenuItem2
             // 
+            this.sToolStripMenuItem2.CheckOnClick = true;
             this.sToolStripMenuItem2.Name = "sToolStripMenuItem2";
             this.sToolStripMenuItem2.Size = new System.Drawing.Size(94, 22);
             this.sToolStripMenuItem2.Text = "30 s";
@@ -212,73 +221,75 @@
             // 
             this.toolStrip1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1,
-            this.toolStripButton2,
-            this.toolStripButton3,
-            this.toolStripButton4,
-            this.toolStripButton5,
-            this.toolStripButton6});
+            this.startBtn,
+            this.stopBtn,
+            this.saveBtn,
+            this.detailBtn,
+            this.searchBtn,
+            this.refreshBtn});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1058, 25);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // toolStripButton1
+            // startBtn
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "Lancer le scan";
-            this.toolStripButton1.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.toolStripButton1.TextDirection = System.Windows.Forms.ToolStripTextDirection.Vertical270;
+            this.startBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.startBtn.Image = ((System.Drawing.Image)(resources.GetObject("startBtn.Image")));
+            this.startBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.startBtn.Name = "startBtn";
+            this.startBtn.Size = new System.Drawing.Size(23, 22);
+            this.startBtn.Text = "Lancer le scan";
+            this.startBtn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.startBtn.TextDirection = System.Windows.Forms.ToolStripTextDirection.Vertical270;
+            this.startBtn.Click += new System.EventHandler(this.startBtn_Click);
             // 
-            // toolStripButton2
+            // stopBtn
             // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton2.Text = "Stopper le scan";
+            this.stopBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.stopBtn.Image = ((System.Drawing.Image)(resources.GetObject("stopBtn.Image")));
+            this.stopBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.stopBtn.Name = "stopBtn";
+            this.stopBtn.Size = new System.Drawing.Size(23, 22);
+            this.stopBtn.Text = "Stopper le scan";
+            this.stopBtn.Click += new System.EventHandler(this.stopBtn_Click);
             // 
-            // toolStripButton3
+            // saveBtn
             // 
-            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
-            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton3.Text = "Sauvegarder l\'élément";
+            this.saveBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.saveBtn.Image = ((System.Drawing.Image)(resources.GetObject("saveBtn.Image")));
+            this.saveBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.saveBtn.Name = "saveBtn";
+            this.saveBtn.Size = new System.Drawing.Size(23, 22);
+            this.saveBtn.Text = "Sauvegarder l\'élément";
             // 
-            // toolStripButton4
+            // detailBtn
             // 
-            this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
-            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton4.Name = "toolStripButton4";
-            this.toolStripButton4.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton4.Text = "Détails de l\'élément";
+            this.detailBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.detailBtn.Image = ((System.Drawing.Image)(resources.GetObject("detailBtn.Image")));
+            this.detailBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.detailBtn.Name = "detailBtn";
+            this.detailBtn.Size = new System.Drawing.Size(23, 22);
+            this.detailBtn.Text = "Détails de l\'élément";
             // 
-            // toolStripButton5
+            // searchBtn
             // 
-            this.toolStripButton5.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton5.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton5.Image")));
-            this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton5.Name = "toolStripButton5";
-            this.toolStripButton5.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton5.Text = "Filtrer";
+            this.searchBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.searchBtn.Image = ((System.Drawing.Image)(resources.GetObject("searchBtn.Image")));
+            this.searchBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.searchBtn.Name = "searchBtn";
+            this.searchBtn.Size = new System.Drawing.Size(23, 22);
+            this.searchBtn.Text = "Filtrer";
             // 
-            // toolStripButton6
+            // refreshBtn
             // 
-            this.toolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton6.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton6.Image")));
-            this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton6.Name = "toolStripButton6";
-            this.toolStripButton6.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton6.Text = "Rafraîchir ";
+            this.refreshBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.refreshBtn.Image = ((System.Drawing.Image)(resources.GetObject("refreshBtn.Image")));
+            this.refreshBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.refreshBtn.Name = "refreshBtn";
+            this.refreshBtn.Size = new System.Drawing.Size(23, 22);
+            this.refreshBtn.Text = "Rafraîchir ";
             // 
             // tabControl1
             // 
@@ -437,6 +448,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "   MIMRSOFT";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
@@ -455,12 +467,12 @@
         private ToolStripMenuItem fichierToolStripMenuItem;
         private ToolStripMenuItem lancerLeScanToolStripMenuItem;
         private ToolStrip toolStrip1;
-        private ToolStripButton toolStripButton1;
-        private ToolStripButton toolStripButton2;
-        private ToolStripButton toolStripButton3;
-        private ToolStripButton toolStripButton4;
-        private ToolStripButton toolStripButton5;
-        private ToolStripButton toolStripButton6;
+        private ToolStripButton startBtn;
+        private ToolStripButton stopBtn;
+        private ToolStripButton saveBtn;
+        private ToolStripButton detailBtn;
+        private ToolStripButton searchBtn;
+        private ToolStripButton refreshBtn;
         private TabControl tabControl1;
         private TabPage tabPage1;
         private TabPage tabPage2;
@@ -477,7 +489,7 @@
         private ToolStripMenuItem uDPToolStripMenuItem;
         private ToolStripMenuItem aideToolStripMenuItem;
         private ToolStripMenuItem àProposToolStripMenuItem;
-        private ToolStripMenuItem carteRéseauToolStripMenuItem;
+        private ToolStripMenuItem NetAdaptToolStripMenuItem;
         private ListView listView1;
         private ColumnHeader deviceName;
         private ColumnHeader ipAddress;
