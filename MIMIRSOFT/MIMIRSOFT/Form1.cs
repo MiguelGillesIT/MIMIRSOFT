@@ -5,7 +5,7 @@ namespace MIMIRSOFT
 {
     public partial class Form1 : Form
     {
-        //private Dictionary<string,NetworkInterface> UpAdapters;
+        private Dictionary<string,NetworkInterface> UpAdapters  = new Dictionary<string, NetworkInterface>();
         public Form1()
         {
             InitializeComponent();
@@ -37,7 +37,7 @@ namespace MIMIRSOFT
                         {
                             if(adapter.NetworkInterfaceType != NetworkInterfaceType.Loopback)
                             {
-                                //UpAdapters.Add(adapter.Name, adapter);
+                                UpAdapters.Add(adapter.Name, adapter);
                                 NetAdaptToolStripMenuItem.DropDown.Items.Add(adapter.Name);
                             }   
                         }
@@ -69,7 +69,7 @@ namespace MIMIRSOFT
                 {
                     if (item.Checked == true)
                     {
-                        //UpAdapters[item.Text]
+                        
                     }
                 }
             }
