@@ -31,13 +31,12 @@ namespace MIMIRSOFT
             return Convert.ToInt32(binaryWildCardMask, 2);
         }
 
-        public static void generateIpAddress(string ipaddress, string mask, int hostNumber)
+        public static string generateIpAddress(string[] netWorkAddress, int hostNumber)
         {
-            string[] netWorkAddress = getSubnetAddress(ipaddress, mask).Split('.');
             string hostBits = Convert.ToString(hostNumber, 2).PadLeft(32, '0');
             string[] hostPart = { hostBits.Substring(0, 8), hostBits.Substring(8, 8), hostBits.Substring(16, 8), hostBits.Substring(24, 8) };
             int[] IPaddress = { Convert.ToInt32(netWorkAddress[0]) | Convert.ToInt32(hostPart[0], 2), Convert.ToInt32(netWorkAddress[1]) | Convert.ToInt32(hostPart[1], 2), Convert.ToInt32(netWorkAddress[2]) | Convert.ToInt32(hostPart[2], 2), Convert.ToInt32(netWorkAddress[3]) | Convert.ToInt32(hostPart[3], 2) };
-            Console.WriteLine(IPaddress[0] + "." + IPaddress[1] + "." + IPaddress[2] + "." + IPaddress[3]);
+            return IPaddress[0] + "." + IPaddress[1] + "." + IPaddress[2] + "." + IPaddress[3] ;
 
         }
     }

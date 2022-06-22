@@ -69,7 +69,29 @@ namespace MIMIRSOFT
                 {
                     if (item.Checked == true)
                     {
-                        
+                        foreach (UnicastIPAddressInformation unicastIPAddressInformation in UpAdapters[item.Text].GetIPProperties().UnicastAddresses)
+                        {
+                            if (unicastIPAddressInformation.Address.AddressFamily == AddressFamily.InterNetwork)
+                            {
+                                string[] networkIPAddress = NetworkUtility.getSubnetAddress(unicastIPAddressInformation.Address.ToString(), unicastIPAddressInformation.IPv4Mask.ToString()).Split('.');
+                                string wildCardMask = NetworkUtility.getWildCardMask(unicastIPAddressInformation.IPv4Mask.ToString());
+                                int addressNumber = NetworkUtility.getNumberOfAvailableAddresses(wildCardMask);
+                                Ping pingSender = new Ping();
+                                PingReply reply;
+                                for (int i = 0; i < addressNumber; i++)
+                                {
+                                    string ipAddress =  NetworkUtility.generateIpAddress(networkIPAddress, i);
+                                    reply = pingSender.Send(ipAddress,50);
+                                    if (reply.Status == IPStatus.Success)
+                                    {
+                                        MessageBox.Show("Address disponible: "+ reply.Address.ToString());
+                                    }
+                                }
+                               
+
+                            }
+
+                        }
                     }
                 }
             }
