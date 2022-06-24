@@ -13,9 +13,11 @@ namespace MIMIRSOFT
         }
         private void Form1_Load(object sender, EventArgs e)
         {
+            //Load available network adaptater's into "Carte reseau" tool strip and make them available
             InitializeNetWorkAdaptater();
             MakeNetWorkAdaptaterToolStripCheckable();
         }
+
 
         public void MakeNetWorkAdaptaterToolStripCheckable()
         {
@@ -25,6 +27,7 @@ namespace MIMIRSOFT
             }
         }
         
+        //Add network adaptater into Upadaptater dictionnary and in "Carte Reseau" Tool Strip
         public void InitializeNetWorkAdaptater()
         {
             foreach (NetworkInterface adapter in NetworkInterface.GetAllNetworkInterfaces())
@@ -46,7 +49,8 @@ namespace MIMIRSOFT
             }
 
         }
-  
+
+        //Check if almost one network adaptater has been selected
         public Boolean IsChoosenAdaptaters()
         {
             foreach (ToolStripMenuItem item in NetAdaptToolStripMenuItem.DropDownItems)
@@ -69,29 +73,35 @@ namespace MIMIRSOFT
                 {
                     if (item.Checked == true)
                     {
-                        foreach (UnicastIPAddressInformation unicastIPAddressInformation in UpAdapters[item.Text].GetIPProperties().UnicastAddresses)
+                        if(iPV4ToolStripMenuItem.Checked == true)
                         {
-                            if (unicastIPAddressInformation.Address.AddressFamily == AddressFamily.InterNetwork)
+                            foreach (UnicastIPAddressInformation unicastIPAddressInformation in UpAdapters[item.Text].GetIPProperties().UnicastAddresses)
                             {
-                                string[] networkIPAddress = NetworkUtility.getSubnetAddress(unicastIPAddressInformation.Address.ToString(), unicastIPAddressInformation.IPv4Mask.ToString()).Split('.');
-                                string wildCardMask = NetworkUtility.getWildCardMask(unicastIPAddressInformation.IPv4Mask.ToString());
-                                int addressNumber = NetworkUtility.getNumberOfAvailableAddresses(wildCardMask);
-                                Ping pingSender = new Ping();
-                                PingReply reply;
-                                for (int i = 0; i < addressNumber; i++)
+                                if (unicastIPAddressInformation.Address.AddressFamily == AddressFamily.InterNetwork)
                                 {
-                                    string ipAddress =  NetworkUtility.generateIpAddress(networkIPAddress, i);
-                                    reply = pingSender.Send(ipAddress,50);
-                                    if (reply.Status == IPStatus.Success)
+                                    string[] networkIPAddress = NetworkUtility.getSubnetAddress(unicastIPAddressInformation.Address.ToString(), unicastIPAddressInformation.IPv4Mask.ToString()).Split('.');
+                                    string wildCardMask = NetworkUtility.getWildCardMask(unicastIPAddressInformation.IPv4Mask.ToString());
+                                    int addressNumber = NetworkUtility.getNumberOfAvailableAddresses(wildCardMask);
+                                    Ping pingSender = new Ping();
+                                    PingReply reply;
+                                    for (int i = 0; i < addressNumber; i++)
                                     {
-                                        MessageBox.Show("Address disponible: "+ reply.Address.ToString());
+                                        string ipAddress = NetworkUtility.generateIpAddress(networkIPAddress, i);
+                                        reply = pingSender.Send(ipAddress, 50);
+                                        if (reply.Status == IPStatus.Success)
+                                        {
+                                            MessageBox.Show("Address disponible: " + reply.Address.ToString());
+
+                                        }
                                     }
+
+
                                 }
-                               
 
                             }
 
                         }
+
                     }
                 }
             }
@@ -101,6 +111,7 @@ namespace MIMIRSOFT
             }
         }
 
+        //Stop analysis
         private void stopBtn_Click(object sender, EventArgs e)
         {
             if(startBtn.Enabled == false)
