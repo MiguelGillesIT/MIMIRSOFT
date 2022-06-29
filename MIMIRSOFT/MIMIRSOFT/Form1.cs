@@ -5,17 +5,24 @@ namespace MIMIRSOFT
 {
     public partial class Form1 : Form
     {
+        private ListViewColumnSorter lvwColumnSorter;
         private Dictionary<string,NetworkInterface> UpAdapters  = new Dictionary<string, NetworkInterface>();
         public Form1()
         {
             InitializeComponent();
-            
+            lvwColumnSorter = new ListViewColumnSorter();
+            this.listView1.ListViewItemSorter = lvwColumnSorter;
+
         }
         private void Form1_Load(object sender, EventArgs e)
         {
             //Load available network adaptater's into "Carte reseau" tool strip and make them available
             InitializeNetWorkAdaptater();
             MakeNetWorkAdaptaterToolStripCheckable();
+            listView1.Items.Add(new ListViewItem(new String[] {"192.168.1.1", "192.168.1.1", "192.168.1.1", "192.168.1.14", "192.168.1.1", "192.168.1.1", "192.168.1.1" }));
+            listView1.Items.Add(new ListViewItem(new String[] { "192.168.1.2", "192.168.1.2", "192.168.1.3", "192.168.1.2", "192.168.1.5", "192.168.1.2", "192.168.1.2" }));
+            listView1.Items.Add(new ListViewItem(new String[] { "192.168.1.3", "192.168.1.1", "192.168.1.2", "192.168.1.3", "192.168.1.3", "192.168.1.3", "192.168.1.3" }));
+            listView1.Items.Add(new ListViewItem(new String[] { "192.168.1.4", "192.168.1.4", "192.168.1.4", "192.168.1.1", "192.168.1.8", "192.168.1.4", "192.168.1.4" }));
         }
 
 
@@ -90,7 +97,9 @@ namespace MIMIRSOFT
                                         reply = pingSender.Send(ipAddress, 50);
                                         if (reply.Status == IPStatus.Success)
                                         {
-                                            MessageBox.Show("Address disponible: " + reply.Address.ToString());
+                                            MessageBox.Show(reply.Address.ToString()); 
+                                           /* string[] row = { reply.Address.ToString(),"" ,"" ,"" ,"" ,"" ,"" };
+                                            listView1.Items.Add(new ListViewItem(row));*/
 
                                         }
                                     }
@@ -120,6 +129,30 @@ namespace MIMIRSOFT
             }
         }
 
-        
+        private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            // Determine if clicked column is already the column that is being sorted.
+            if (e.Column == lvwColumnSorter.SortColumn)
+            {
+                // Reverse the current sort direction for this column.
+                if (lvwColumnSorter.Order == SortOrder.Ascending)
+                {
+                    lvwColumnSorter.Order = SortOrder.Descending;
+                }
+                else
+                {
+                    lvwColumnSorter.Order = SortOrder.Ascending;
+                }
+            }
+            else
+            {
+                // Set the column number that is to be sorted; default to ascending.
+                lvwColumnSorter.SortColumn = e.Column;
+                lvwColumnSorter.Order = SortOrder.Ascending;
+            }
+
+            // Perform the sort with these new sort options.
+            this.listView1.Sort();
+        }
     }
 }
