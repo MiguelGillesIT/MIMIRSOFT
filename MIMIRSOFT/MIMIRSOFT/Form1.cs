@@ -19,10 +19,7 @@ namespace MIMIRSOFT
             //Load available network adaptater's into "Carte reseau" tool strip and make them available
             InitializeNetWorkAdaptater();
             MakeNetWorkAdaptaterToolStripCheckable();
-            listView1.Items.Add(new ListViewItem(new String[] {"192.168.1.1", "192.168.1.1", "192.168.1.1", "192.168.1.14", "192.168.1.1", "192.168.1.1", "192.168.1.1" }));
-            listView1.Items.Add(new ListViewItem(new String[] { "192.168.1.2", "192.168.1.2", "192.168.1.3", "192.168.1.2", "192.168.1.5", "192.168.1.2", "192.168.1.2" }));
-            listView1.Items.Add(new ListViewItem(new String[] { "192.168.1.3", "192.168.1.1", "192.168.1.2", "192.168.1.3", "192.168.1.3", "192.168.1.3", "192.168.1.3" }));
-            listView1.Items.Add(new ListViewItem(new String[] { "192.168.1.4", "192.168.1.4", "192.168.1.4", "192.168.1.1", "192.168.1.8", "192.168.1.4", "192.168.1.4" }));
+            InterfaceContentsToImplement();
         }
 
 
@@ -70,6 +67,18 @@ namespace MIMIRSOFT
             return false;
         }
 
+        //A set of elements to add programmatically 
+        public void InterfaceContentsToImplement()
+        {
+            listView1.Items.Add(new ListViewItem(new String[] { "192.168.1.1", "192.168.1.1", "192.168.1.1", "192.168.1.14", "192.168.1.1", "192.168.1.1", "192.168.1.1" }));
+            listView1.Items.Add(new ListViewItem(new String[] { "192.168.1.2", "192.168.1.2", "192.168.1.3", "192.168.1.2", "192.168.1.5", "192.168.1.2", "192.168.1.2" }));
+            listView1.Items.Add(new ListViewItem(new String[] { "192.168.1.3", "192.168.1.1", "192.168.1.2", "192.168.1.3", "192.168.1.3", "192.168.1.3", "192.168.1.3" }));
+            listView1.Items.Add(new ListViewItem(new String[] { "192.168.1.4", "192.168.1.4", "192.168.1.4", "192.168.1.1", "192.168.1.8", "192.168.1.4", "192.168.1.4" }));
+            listView1.Items[0].ImageIndex = 0;
+            listView1.Items[1].ImageIndex = 1;
+            listView1.Items[2].ImageIndex = 0;
+            listView1.Items[3].ImageIndex = 1;
+        }
         private void startBtn_Click(object sender, EventArgs e)
         {
             

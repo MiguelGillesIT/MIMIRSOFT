@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fichierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,6 +64,7 @@
             this.status = new System.Windows.Forms.ColumnHeader();
             this.firstDetection = new System.Windows.Forms.ColumnHeader();
             this.lastDetection = new System.Windows.Forms.ColumnHeader();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.listView2 = new System.Windows.Forms.ListView();
             this.processName = new System.Windows.Forms.ColumnHeader();
@@ -327,6 +329,7 @@
             this.listView1.Location = new System.Drawing.Point(3, 3);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(1044, 389);
+            this.listView1.SmallImageList = this.imageList1;
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -366,6 +369,14 @@
             // 
             this.lastDetection.Text = "Dernière détection";
             this.lastDetection.Width = 150;
+            // 
+            // imageList1
+            // 
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "Button-Blank-Red-icon.png");
+            this.imageList1.Images.SetKeyName(1, "Button-Blank-Green-icon.png");
             // 
             // tabPage2
             // 
@@ -510,5 +521,6 @@
         private ColumnHeader remotePort;
         private ColumnHeader remoteAddress;
         private ColumnHeader state;
+        private ImageList imageList1;
     }
 }
