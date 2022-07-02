@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace MIMIRSOFT
 {
@@ -38,6 +39,12 @@ namespace MIMIRSOFT
             int[] IPaddress = { Convert.ToInt32(netWorkAddress[0]) | Convert.ToInt32(hostPart[0], 2), Convert.ToInt32(netWorkAddress[1]) | Convert.ToInt32(hostPart[1], 2), Convert.ToInt32(netWorkAddress[2]) | Convert.ToInt32(hostPart[2], 2), Convert.ToInt32(netWorkAddress[3]) | Convert.ToInt32(hostPart[3], 2) };
             return IPaddress[0] + "." + IPaddress[1] + "." + IPaddress[2] + "." + IPaddress[3] ;
 
+        }
+
+        public static string findDnsNameOfIpAddress(string IpAddress)
+        {
+            IPHostEntry hostEntry = Dns.GetHostEntry(IpAddress);
+            return hostEntry.HostName;
         }
     }
 }
