@@ -91,8 +91,10 @@ namespace MIMIRSOFT
                     {
                         if(iPV4ToolStripMenuItem.Checked == true)
                         {
+                            
                             foreach (UnicastIPAddressInformation unicastIPAddressInformation in UpAdapters[item.Text].GetIPProperties().UnicastAddresses)
                             {
+                               
                                 if (unicastIPAddressInformation.Address.AddressFamily == AddressFamily.InterNetwork)
                                 {
                                     string[] networkIPAddress = NetworkUtility.getSubnetAddress(unicastIPAddressInformation.Address.ToString(), unicastIPAddressInformation.IPv4Mask.ToString()).Split('.');
@@ -106,8 +108,8 @@ namespace MIMIRSOFT
                                         reply = pingSender.Send(ipAddress, 50);
                                         if (reply.Status == IPStatus.Success)
                                         {
-                                            MessageBox.Show("IP Address : " + reply.Address.ToString() + ", Device Name : " + NetworkUtility.findDnsNameOfIpAddress(reply.Address.ToString())); 
-                                           /* string[] row = { reply.Address.ToString(),"" ,"" ,"" ,"" ,"" ,"" };
+                                            MessageBox.Show("IP Address : " + reply.Address.ToString() + ", Device Name : " + NetworkUtility.getDnsNameOfIpAddress(reply.Address.ToString()) + ",Mac Address : " + NetworkUtility.getMacAddress(reply.Address.ToString())); 
+                                            /* string[] row = { reply.Address.ToString(),"" ,"" ,"" ,"" ,"" ,"" };
                                             listView1.Items.Add(new ListViewItem(row));*/
 
                                         }

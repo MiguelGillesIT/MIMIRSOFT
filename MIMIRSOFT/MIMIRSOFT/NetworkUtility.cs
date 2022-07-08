@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using System.Diagnostics;
 using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 
 namespace MIMIRSOFT
 {
@@ -41,10 +45,71 @@ namespace MIMIRSOFT
 
         }
 
-        public static string findDnsNameOfIpAddress(string IpAddress)
+        public static string getDnsNameOfIpAddress(string IpAddress)
         {
             IPHostEntry hostEntry = Dns.GetHostEntry(IpAddress);
             return hostEntry.HostName;
         }
+
+        public static string getMacAddress(string IpAddress)
+        {
+            string macAddress = string.Empty;
+            Process ArpProcess = new Process();
+            ArpProcess.StartInfo.FileName = "arp";
+            ArpProcess.StartInfo.Arguments = "-a " + IpAddress;
+            ArpProcess.StartInfo.UseShellExecute = false;
+            ArpProcess.StartInfo.RedirectStandardOutput = true;
+            ArpProcess.StartInfo.CreateNoWindow = true;
+            ArpProcess.Start();
+            string strOutput = ArpProcess.StandardOutput.ReadToEnd();
+            string[] substrings = strOutput.Split('-');
+
+            if (substrings.Length >= 8)
+            {
+                macAddress = substrings[3].Substring(Math.Max(0, substrings[3].Length - 2))
+                         + "-" + substrings[4] + "-" + substrings[5] + "-" + substrings[6]
+                         + "-" + substrings[7] + "-"
+                         + substrings[8].Substring(0, 2);
+
+            }
+            return macAddress;
+        }
+
+        public static string getIPV4DefaultGatewayAdressOfAdaptater(NetworkInterface adapter)
+        {
+            string defaultGatewayIPAdress = "";
+            GatewayIPAddressInformationCollection addresses = adapter.GetIPProperties().GatewayAddresses;
+            if (addresses.Count > 0)
+            {
+                foreach (GatewayIPAddressInformation address in addresses)
+                {
+                    if(address.Address.AddressFamily == AddressFamily.InterNetwork){
+                        defaultGatewayIPAdress = address.Address.ToString();
+                    }
+                    
+                }
+            }
+            return defaultGatewayIPAdress;
+        }
+
+        public static string getIPV6DefaultGatewayAdressOfAdaptater(NetworkInterface adapter)
+        {
+            string defaultGatewayIPAdress = "";
+            GatewayIPAddressInformationCollection addresses = adapter.GetIPProperties().GatewayAddresses;
+            if (addresses.Count > 0)
+            {
+                foreach (GatewayIPAddressInformation address in addresses)
+                {
+                    if (address.Address.AddressFamily == AddressFamily.InterNetworkV6)
+                    {
+                       defaultGatewayIPAdress = address.Address.ToString();
+                    }
+
+                }
+            }
+
+            return defaultGatewayIPAdress;
+        }
+
     }
 }
