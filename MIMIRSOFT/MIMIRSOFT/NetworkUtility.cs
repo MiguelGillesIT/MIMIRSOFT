@@ -45,6 +45,21 @@ namespace MIMIRSOFT
 
         }
 
+        public static string findNicConstructor(string macAddress)
+        {
+
+            string macPrefix = macAddress.Substring(0, 8).ToUpper();
+            Console.WriteLine(macPrefix);
+            foreach (string line in File.ReadLines(@"D:\PROJETS\MIMIRSOFT\macAdaptaterConstructor.txt"))
+            {
+                if (line.Contains(macPrefix) & line.Contains("(hex)"))
+                {
+                    return line.Substring(18);
+                }
+            }
+            return "";
+        }
+
         public static string getDnsNameOfIpAddress(string IpAddress)
         {
             IPHostEntry hostEntry = Dns.GetHostEntry(IpAddress);

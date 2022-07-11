@@ -108,7 +108,8 @@ namespace MIMIRSOFT
                                         reply = pingSender.Send(ipAddress, 50);
                                         if (reply.Status == IPStatus.Success)
                                         {
-                                            MessageBox.Show("IP Address : " + reply.Address.ToString() + ", Device Name : " + NetworkUtility.getDnsNameOfIpAddress(reply.Address.ToString()) + ",Mac Address : " + NetworkUtility.getMacAddress(reply.Address.ToString())); 
+                                            string macAddress = NetworkUtility.getMacAddress(reply.Address.ToString());
+                                            MessageBox.Show("IP Address : " + reply.Address.ToString() + ", Device Name : " + NetworkUtility.getDnsNameOfIpAddress(reply.Address.ToString()) + ",Mac Address : " + macAddress + ", NetworkAdaptater Company : " + NetworkUtility.findNicConstructor(macAddress)); 
                                             /* string[] row = { reply.Address.ToString(),"" ,"" ,"" ,"" ,"" ,"" };
                                             listView1.Items.Add(new ListViewItem(row));*/
 
