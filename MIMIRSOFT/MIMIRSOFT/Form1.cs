@@ -108,8 +108,23 @@ namespace MIMIRSOFT
                                         reply = pingSender.Send(ipAddress, 50);
                                         if (reply.Status == IPStatus.Success)
                                         {
-                                            string macAddress = NetworkUtility.getMacAddress(reply.Address.ToString());
-                                            MessageBox.Show("IP Address : " + reply.Address.ToString() + ", Device Name : " + NetworkUtility.getDnsNameOfIpAddress(reply.Address.ToString()) + ",Mac Address : " + macAddress + ", NetworkAdaptater Company : " + NetworkUtility.findNicConstructor(macAddress)); 
+                                            string macAddress;
+                                            string ipAdress = reply.Address.ToString();
+                                            string domainName = NetworkUtility.getDnsNameOfIpAddress(reply.Address.ToString());
+                                            if (ipAdress == unicastIPAddressInformation.Address.ToString())
+                                            {
+                                                macAddress = UpAdapters[item.Text].GetPhysicalAddress().ToString();
+                                                
+                                                
+
+                                            }
+                                            else
+                                            {
+                                                macAddress = NetworkUtility.getMacAddress(reply.Address.ToString());
+                                            }
+
+                                            string adaptaterConstructor = NetworkUtility.findNicConstructor(macAddress);
+                                            MessageBox.Show("IP Address : " + ipAdress + ", Device Name : " + domainName + ",Mac Address : " + macAddress + ", NetworkAdaptater Company : " + adaptaterConstructor); 
                                             /* string[] row = { reply.Address.ToString(),"" ,"" ,"" ,"" ,"" ,"" };
                                             listView1.Items.Add(new ListViewItem(row));*/
 
@@ -125,6 +140,8 @@ namespace MIMIRSOFT
 
                     }
                 }
+
+                startBtn.Enabled = true;
             }
             else
             {

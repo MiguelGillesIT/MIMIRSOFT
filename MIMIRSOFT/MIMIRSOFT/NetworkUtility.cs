@@ -49,13 +49,25 @@ namespace MIMIRSOFT
         {
 
             string macPrefix = macAddress.Substring(0, 8).ToUpper();
-            Console.WriteLine(macPrefix);
-            foreach (string line in File.ReadLines(@"D:\PROJETS\MIMIRSOFT\macAdaptaterConstructor.txt"))
+            if (!macPrefix.Contains("-"))
             {
-                if (line.Contains(macPrefix) & line.Contains("(hex)"))
+                macPrefix = macAddress.Substring(0, 6);
+                foreach (string line in File.ReadLines(@"D:\PROJETS\MIMIRSOFT\macAdaptaterConstructor.txt"))
                 {
-                    return line.Substring(18);
+                    if (line.Contains(macPrefix) & line.Contains("(base 16)"))
+                    {
+                        return line.Substring(22);
+                    }
                 }
+            }
+            else{
+                foreach (string line in File.ReadLines(@"D:\PROJETS\MIMIRSOFT\macAdaptaterConstructor.txt"))
+                {
+                    if (line.Contains(macPrefix) & line.Contains("(hex)"))
+                    {
+                        return line.Substring(18);
+                    }
+                } 
             }
             return "";
         }
