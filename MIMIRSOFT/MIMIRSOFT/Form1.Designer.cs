@@ -60,8 +60,8 @@
             this.deviceName = new System.Windows.Forms.ColumnHeader();
             this.ipAddress = new System.Windows.Forms.ColumnHeader();
             this.macAddress = new System.Windows.Forms.ColumnHeader();
+            this.Info = new System.Windows.Forms.ColumnHeader();
             this.adaptateurProvider = new System.Windows.Forms.ColumnHeader();
-            this.status = new System.Windows.Forms.ColumnHeader();
             this.firstDetection = new System.Windows.Forms.ColumnHeader();
             this.lastDetection = new System.Windows.Forms.ColumnHeader();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
@@ -91,7 +91,7 @@
             this.aideToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1058, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1060, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -125,6 +125,7 @@
             this.NetAdaptToolStripMenuItem.Name = "NetAdaptToolStripMenuItem";
             this.NetAdaptToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.NetAdaptToolStripMenuItem.Text = "Carte Réseau";
+            this.NetAdaptToolStripMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.NetAdaptToolStripMenuItem_DropDownItemClicked);
             // 
             // typeDeRéseauToolStripMenuItem
             // 
@@ -231,7 +232,7 @@
             this.refreshBtn});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1058, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1060, 25);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -300,7 +301,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 139);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1058, 423);
+            this.tabControl1.Size = new System.Drawing.Size(1184, 423);
             this.tabControl1.TabIndex = 3;
             // 
             // tabPage1
@@ -309,7 +310,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1050, 395);
+            this.tabPage1.Size = new System.Drawing.Size(1176, 395);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Réseau";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -320,15 +321,15 @@
             this.deviceName,
             this.ipAddress,
             this.macAddress,
+            this.Info,
             this.adaptateurProvider,
-            this.status,
             this.firstDetection,
             this.lastDetection});
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
             this.listView1.Location = new System.Drawing.Point(3, 3);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(1044, 389);
+            this.listView1.Size = new System.Drawing.Size(1170, 389);
             this.listView1.SmallImageList = this.imageList1;
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
@@ -350,15 +351,15 @@
             this.macAddress.Text = "Adresse MAC ";
             this.macAddress.Width = 150;
             // 
+            // Info
+            // 
+            this.Info.Text = "Info";
+            this.Info.Width = 150;
+            // 
             // adaptateurProvider
             // 
             this.adaptateurProvider.Text = "Fournisseur ";
             this.adaptateurProvider.Width = 150;
-            // 
-            // status
-            // 
-            this.status.Text = "Activité";
-            this.status.Width = 150;
             // 
             // firstDetection
             // 
@@ -384,7 +385,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1050, 395);
+            this.tabPage2.Size = new System.Drawing.Size(1176, 395);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Ports";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -404,7 +405,7 @@
             this.listView2.FullRowSelect = true;
             this.listView2.Location = new System.Drawing.Point(3, 3);
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(1044, 389);
+            this.listView2.Size = new System.Drawing.Size(1170, 389);
             this.listView2.TabIndex = 0;
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.Details;
@@ -454,7 +455,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1058, 562);
+            this.ClientSize = new System.Drawing.Size(1060, 562);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -509,7 +510,6 @@
         private ColumnHeader ipAddress;
         private ColumnHeader macAddress;
         private ColumnHeader adaptateurProvider;
-        private ColumnHeader status;
         private ColumnHeader firstDetection;
         private ColumnHeader lastDetection;
         private ListView listView2;
@@ -522,5 +522,6 @@
         private ColumnHeader remoteAddress;
         private ColumnHeader state;
         private ImageList imageList1;
+        private ColumnHeader Info;
     }
 }

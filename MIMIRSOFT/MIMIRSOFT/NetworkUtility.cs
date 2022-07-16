@@ -45,10 +45,15 @@ namespace MIMIRSOFT
 
         }
 
+        public static string getMacAddressOfAdaptater(NetworkInterface adapter)
+        {
+            return adapter.GetPhysicalAddress().ToString();
+        }
+
         public static string findNicConstructor(string macAddress)
         {
 
-            string macPrefix = macAddress.Substring(0, 8).ToUpper();
+            string macPrefix = macAddress.Substring(0, 8);
             if (!macPrefix.Contains("-"))
             {
                 macPrefix = macAddress.Substring(0, 6);

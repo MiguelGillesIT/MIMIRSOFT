@@ -7,6 +7,16 @@ namespace MIMIRSOFT
     {
         private ListViewColumnSorter lvwColumnSorter;
         private Dictionary<string,NetworkInterface> UpAdapters  = new Dictionary<string, NetworkInterface>();
+        
+
+        private string selectedAdaptaterName = "";
+        private string[] currentDeviceNetworkIPAddress;
+        private string currentDeviceWildCardMask;
+        private Device currentDevice = new Device();
+        private string currentDeviceDefaultGatewayIPAddress;
+        
+
+        private List<Device> onlineDevices = new List<Device>();
         public Form1()
         {
             InitializeComponent();
@@ -19,7 +29,6 @@ namespace MIMIRSOFT
             //Load available network adaptater's into "Carte reseau" tool strip and make them available
             InitializeNetWorkAdaptater();
             MakeNetWorkAdaptaterToolStripCheckable();
-            InterfaceContentsToImplement();
         }
 
 
@@ -52,93 +61,103 @@ namespace MIMIRSOFT
                 }
             }
 
-        }
-
-        //Check if almost one network adaptater has been selected
-        public Boolean IsChoosenAdaptaters()
-        {
-            foreach (ToolStripMenuItem item in NetAdaptToolStripMenuItem.DropDownItems)
-            {
-                if (item.Checked == true)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        }        
 
         //A set of elements to add programmatically 
-        public void InterfaceContentsToImplement()
+        
+
+        public void ClearNetworkListView()
         {
-            listView1.Items.Add(new ListViewItem(new String[] { "192.168.1.1", "192.168.1.1", "192.168.1.1", "192.168.1.14", "192.168.1.1", "192.168.1.1", "192.168.1.1" }));
-            listView1.Items.Add(new ListViewItem(new String[] { "192.168.1.2", "192.168.1.2", "192.168.1.3", "192.168.1.2", "192.168.1.5", "192.168.1.2", "192.168.1.2" }));
-            listView1.Items.Add(new ListViewItem(new String[] { "192.168.1.3", "192.168.1.1", "192.168.1.2", "192.168.1.3", "192.168.1.3", "192.168.1.3", "192.168.1.3" }));
-            listView1.Items.Add(new ListViewItem(new String[] { "192.168.1.4", "192.168.1.4", "192.168.1.4", "192.168.1.1", "192.168.1.8", "192.168.1.4", "192.168.1.4" }));
-            listView1.Items[0].ImageIndex = 0;
-            listView1.Items[1].ImageIndex = 1;
-            listView1.Items[2].ImageIndex = 0;
-            listView1.Items[3].ImageIndex = 1;
-        }
-        private void startBtn_Click(object sender, EventArgs e)
-        {
+            if(listView1.Items.Count > 0)
+            {
+                for (int i = 0; i <= listView1.Items.Count + 1; i++)
+                {
+                    listView1.Items.RemoveAt(0);
+                }
+            }
             
-            if (IsChoosenAdaptaters())
+        }
+        private void NetAdaptToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (selectedAdaptaterName != e.ClickedItem.ToString())
+            {
+                ClearNetworkListView();
+                selectedAdaptaterName = e.ClickedItem.ToString();
+                foreach (UnicastIPAddressInformation unicastIPAddressInformation in UpAdapters[selectedAdaptaterName].GetIPProperties().UnicastAddresses)
+                {
+                    if (unicastIPAddressInformation.Address.AddressFamily == AddressFamily.InterNetwork)
+                    {
+                        currentDevice.IpAddress = unicastIPAddressInformation.Address.ToString();
+                        currentDevice.MacAddress = NetworkUtility.getMacAddressOfAdaptater(UpAdapters[selectedAdaptaterName]).ToUpper();
+                        currentDevice.DomainName = NetworkUtility.getDnsNameOfIpAddress(currentDevice.IpAddress);
+                        currentDevice.AdaptatorConstructor = NetworkUtility.findNicConstructor(currentDevice.MacAddress);
+                        currentDevice.Info = "Votre Machine";
+                        currentDevice.MacAddress = currentDevice.MacAddress.Substring(0, 2) + "-" + currentDevice.MacAddress.Substring(2, 2) + "-" + currentDevice.MacAddress.Substring(4, 2) + "-" + currentDevice.MacAddress.Substring(6, 2) + "-" + currentDevice.MacAddress.Substring(8, 2) + "-" + currentDevice.MacAddress.Substring(10, 2);
+
+
+                        currentDeviceNetworkIPAddress = NetworkUtility.getSubnetAddress(unicastIPAddressInformation.Address.ToString(), unicastIPAddressInformation.IPv4Mask.ToString()).Split('.');
+                        currentDeviceWildCardMask = NetworkUtility.getWildCardMask(unicastIPAddressInformation.IPv4Mask.ToString());
+                        currentDeviceDefaultGatewayIPAddress = NetworkUtility.getIPV4DefaultGatewayAdressOfAdaptater(UpAdapters[selectedAdaptaterName]);
+                    }
+                }
+            }
+            else if (selectedAdaptaterName == e.ClickedItem.ToString())
+            {
+                selectedAdaptaterName = "";
+            }
+        }
+
+        public async void PingSweep()
+        {
+            int addressNumber = NetworkUtility.getNumberOfAvailableAddresses(currentDeviceWildCardMask);
+            Ping pingSender = new Ping();
+            PingReply reply;
+            for (int i = 0; i < addressNumber; i++)
+            {
+                string ipAddress = NetworkUtility.generateIpAddress(currentDeviceNetworkIPAddress, i);
+                reply = pingSender.Send(ipAddress, 50);
+                if (reply.Status == IPStatus.Success)
+                {
+                    Thread trd = new Thread(new ThreadStart(() => {
+                        string ipAdress = reply.Address.ToString();
+                        if (ipAdress != currentDevice.IpAddress)
+                        {
+                            string macAddress = NetworkUtility.getMacAddress(ipAdress).ToUpper();
+
+                            Device onlineDevice = new Device(ipAdress, macAddress, NetworkUtility.getDnsNameOfIpAddress(ipAdress), NetworkUtility.findNicConstructor(macAddress));
+                            if(ipAddress == currentDeviceDefaultGatewayIPAddress)
+                            {
+                                onlineDevice.Info = "Votre routeur";
+                            }
+                            onlineDevices.Add(onlineDevice);
+                        }
+                        
+                        else
+                        {
+                            onlineDevices.Add(currentDevice);
+                        }
+                    }));
+                    trd.IsBackground = true;
+                    trd.Start();
+                    
+                }
+            }
+        }
+
+        private async void startBtn_Click(object sender, EventArgs e)
+        {    
+            if (selectedAdaptaterName != "")
             {
                 startBtn.Enabled = false;
-                foreach (ToolStripMenuItem item in NetAdaptToolStripMenuItem.DropDownItems)
+                await Task.Run(() => { PingSweep(); });
+                
+
+                int nbItem = 0;
+                foreach(Device device in onlineDevices)
                 {
-                    if (item.Checked == true)
-                    {
-                        if(iPV4ToolStripMenuItem.Checked == true)
-                        {
-                            
-                            foreach (UnicastIPAddressInformation unicastIPAddressInformation in UpAdapters[item.Text].GetIPProperties().UnicastAddresses)
-                            {
-                               
-                                if (unicastIPAddressInformation.Address.AddressFamily == AddressFamily.InterNetwork)
-                                {
-                                    string[] networkIPAddress = NetworkUtility.getSubnetAddress(unicastIPAddressInformation.Address.ToString(), unicastIPAddressInformation.IPv4Mask.ToString()).Split('.');
-                                    string wildCardMask = NetworkUtility.getWildCardMask(unicastIPAddressInformation.IPv4Mask.ToString());
-                                    int addressNumber = NetworkUtility.getNumberOfAvailableAddresses(wildCardMask);
-                                    Ping pingSender = new Ping();
-                                    PingReply reply;
-                                    for (int i = 0; i < addressNumber; i++)
-                                    {
-                                        string ipAddress = NetworkUtility.generateIpAddress(networkIPAddress, i);
-                                        reply = pingSender.Send(ipAddress, 50);
-                                        if (reply.Status == IPStatus.Success)
-                                        {
-                                            string macAddress;
-                                            string ipAdress = reply.Address.ToString();
-                                            string domainName = NetworkUtility.getDnsNameOfIpAddress(reply.Address.ToString());
-                                            if (ipAdress == unicastIPAddressInformation.Address.ToString())
-                                            {
-                                                macAddress = UpAdapters[item.Text].GetPhysicalAddress().ToString();
-                                                
-                                                
-
-                                            }
-                                            else
-                                            {
-                                                macAddress = NetworkUtility.getMacAddress(reply.Address.ToString());
-                                            }
-
-                                            string adaptaterConstructor = NetworkUtility.findNicConstructor(macAddress);
-                                            MessageBox.Show("IP Address : " + ipAdress + ", Device Name : " + domainName + ",Mac Address : " + macAddress + ", NetworkAdaptater Company : " + adaptaterConstructor); 
-                                            /* string[] row = { reply.Address.ToString(),"" ,"" ,"" ,"" ,"" ,"" };
-                                            listView1.Items.Add(new ListViewItem(row));*/
-
-                                        }
-                                    }
-
-
-                                }
-
-                            }
-
-                        }
-
-                    }
+                    listView1.Items.Add(new ListViewItem(new String[] { device.DomainName, device.IpAddress, device.MacAddress, device.Info, device.AdaptatorConstructor, "", DateTime.Now.ToString() }));
+                    listView1.Items[nbItem].ImageIndex = 1;
+                    nbItem++;
                 }
 
                 startBtn.Enabled = true;
@@ -147,6 +166,7 @@ namespace MIMIRSOFT
             {
                 MessageBox.Show("Aucune carte réseau sélectionnée");
             }
+            
         }
 
         //Stop analysis
@@ -183,5 +203,6 @@ namespace MIMIRSOFT
             // Perform the sort with these new sort options.
             this.listView1.Sort();
         }
+            
     }
 }
