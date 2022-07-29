@@ -52,7 +52,6 @@ namespace MIMIRSOFT
 
         public static string findNicConstructor(string macAddress)
         {
-
             string macPrefix = macAddress.Substring(0, 8);
             if (!macPrefix.Contains("-"))
             {
@@ -79,8 +78,15 @@ namespace MIMIRSOFT
 
         public static string getDnsNameOfIpAddress(string IpAddress)
         {
-            IPHostEntry hostEntry = Dns.GetHostEntry(IpAddress);
-            return hostEntry.HostName;
+            try
+            {
+                IPHostEntry hostEntry = Dns.GetHostEntry(IpAddress);
+                return hostEntry.HostName;
+            }
+            catch (Exception e)
+            {
+                return "";
+            }
         }
 
         public static string getMacAddress(string IpAddress)

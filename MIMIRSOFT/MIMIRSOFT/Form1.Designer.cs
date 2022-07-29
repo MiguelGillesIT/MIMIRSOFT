@@ -57,8 +57,8 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.deviceName = new System.Windows.Forms.ColumnHeader();
             this.ipAddress = new System.Windows.Forms.ColumnHeader();
+            this.deviceName = new System.Windows.Forms.ColumnHeader();
             this.macAddress = new System.Windows.Forms.ColumnHeader();
             this.Info = new System.Windows.Forms.ColumnHeader();
             this.adaptateurProvider = new System.Windows.Forms.ColumnHeader();
@@ -75,6 +75,8 @@
             this.remotePort = new System.Windows.Forms.ColumnHeader();
             this.remoteAddress = new System.Windows.Forms.ColumnHeader();
             this.state = new System.Windows.Forms.ColumnHeader();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -187,24 +189,26 @@
             // 
             // sToolStripMenuItem
             // 
+            this.sToolStripMenuItem.Checked = true;
             this.sToolStripMenuItem.CheckOnClick = true;
+            this.sToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.sToolStripMenuItem.Name = "sToolStripMenuItem";
-            this.sToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
-            this.sToolStripMenuItem.Text = "10 s";
+            this.sToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.sToolStripMenuItem.Text = "1 min ";
             // 
             // sToolStripMenuItem1
             // 
             this.sToolStripMenuItem1.CheckOnClick = true;
             this.sToolStripMenuItem1.Name = "sToolStripMenuItem1";
-            this.sToolStripMenuItem1.Size = new System.Drawing.Size(94, 22);
-            this.sToolStripMenuItem1.Text = "20 s";
+            this.sToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
+            this.sToolStripMenuItem1.Text = "2 min";
             // 
             // sToolStripMenuItem2
             // 
             this.sToolStripMenuItem2.CheckOnClick = true;
             this.sToolStripMenuItem2.Name = "sToolStripMenuItem2";
-            this.sToolStripMenuItem2.Size = new System.Drawing.Size(94, 22);
-            this.sToolStripMenuItem2.Text = "30 s";
+            this.sToolStripMenuItem2.Size = new System.Drawing.Size(107, 22);
+            this.sToolStripMenuItem2.Text = "5 min";
             // 
             // aideToolStripMenuItem
             // 
@@ -261,6 +265,7 @@
             // saveBtn
             // 
             this.saveBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.saveBtn.Enabled = false;
             this.saveBtn.Image = ((System.Drawing.Image)(resources.GetObject("saveBtn.Image")));
             this.saveBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveBtn.Name = "saveBtn";
@@ -270,6 +275,7 @@
             // detailBtn
             // 
             this.detailBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.detailBtn.Enabled = false;
             this.detailBtn.Image = ((System.Drawing.Image)(resources.GetObject("detailBtn.Image")));
             this.detailBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.detailBtn.Name = "detailBtn";
@@ -301,7 +307,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 139);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1184, 423);
+            this.tabControl1.Size = new System.Drawing.Size(1063, 423);
             this.tabControl1.TabIndex = 3;
             // 
             // tabPage1
@@ -310,7 +316,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1176, 395);
+            this.tabPage1.Size = new System.Drawing.Size(1055, 395);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Réseau";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -318,8 +324,8 @@
             // listView1
             // 
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.deviceName,
             this.ipAddress,
+            this.deviceName,
             this.macAddress,
             this.Info,
             this.adaptateurProvider,
@@ -329,22 +335,22 @@
             this.listView1.FullRowSelect = true;
             this.listView1.Location = new System.Drawing.Point(3, 3);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(1170, 389);
+            this.listView1.Size = new System.Drawing.Size(1049, 389);
             this.listView1.SmallImageList = this.imageList1;
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView1_ColumnClick);
             // 
-            // deviceName
-            // 
-            this.deviceName.Text = "Périphérique";
-            this.deviceName.Width = 150;
-            // 
             // ipAddress
             // 
             this.ipAddress.Text = "Adresse IP";
             this.ipAddress.Width = 150;
+            // 
+            // deviceName
+            // 
+            this.deviceName.Text = "Périphérique";
+            this.deviceName.Width = 150;
             // 
             // macAddress
             // 
@@ -385,7 +391,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1176, 395);
+            this.tabPage2.Size = new System.Drawing.Size(1055, 395);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Ports";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -405,7 +411,7 @@
             this.listView2.FullRowSelect = true;
             this.listView2.Location = new System.Drawing.Point(3, 3);
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(1170, 389);
+            this.listView2.Size = new System.Drawing.Size(1049, 389);
             this.listView2.TabIndex = 0;
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.Details;
@@ -449,6 +455,16 @@
             // 
             this.state.Text = "Etat";
             this.state.Width = 100;
+            // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.WorkerSupportsCancellation = true;
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
             // Form1
             // 
@@ -523,5 +539,7 @@
         private ColumnHeader state;
         private ImageList imageList1;
         private ColumnHeader Info;
+        private System.Windows.Forms.Timer timer1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }

@@ -1,5 +1,6 @@
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.ComponentModel;
 
 namespace MIMIRSOFT
 {
@@ -7,16 +8,17 @@ namespace MIMIRSOFT
     {
         private ListViewColumnSorter lvwColumnSorter;
         private Dictionary<string,NetworkInterface> UpAdapters  = new Dictionary<string, NetworkInterface>();
-        
 
         private string selectedAdaptaterName = "";
         private string[] currentDeviceNetworkIPAddress;
         private string currentDeviceWildCardMask;
         private Device currentDevice = new Device();
         private string currentDeviceDefaultGatewayIPAddress;
-        
 
         private List<Device> onlineDevices = new List<Device>();
+        private List<Device> offlineDevices = new List<Device>();
+
+       
         public Form1()
         {
             InitializeComponent();
@@ -29,8 +31,10 @@ namespace MIMIRSOFT
             //Load available network adaptater's into "Carte reseau" tool strip and make them available
             InitializeNetWorkAdaptater();
             MakeNetWorkAdaptaterToolStripCheckable();
-        }
+            timer1.Interval = 1000 * 30;
+            //timer1.Interval = Int32.Parse(sToolStripMenuItem.Text.Substring(0,1)) * 1000 * 60;
 
+        }
 
         public void MakeNetWorkAdaptaterToolStripCheckable()
         {
@@ -64,7 +68,6 @@ namespace MIMIRSOFT
         }        
 
         //A set of elements to add programmatically 
-        
 
         public void ClearNetworkListView()
         {
@@ -107,75 +110,29 @@ namespace MIMIRSOFT
             }
         }
 
-        public async void PingSweep()
-        {
-            int addressNumber = NetworkUtility.getNumberOfAvailableAddresses(currentDeviceWildCardMask);
-            Ping pingSender = new Ping();
-            PingReply reply;
-            for (int i = 0; i < addressNumber; i++)
-            {
-                string ipAddress = NetworkUtility.generateIpAddress(currentDeviceNetworkIPAddress, i);
-                reply = pingSender.Send(ipAddress, 50);
-                if (reply.Status == IPStatus.Success)
-                {
-                    Thread trd = new Thread(new ThreadStart(() => {
-                        string ipAdress = reply.Address.ToString();
-                        if (ipAdress != currentDevice.IpAddress)
-                        {
-                            string macAddress = NetworkUtility.getMacAddress(ipAdress).ToUpper();
-
-                            Device onlineDevice = new Device(ipAdress, macAddress, NetworkUtility.getDnsNameOfIpAddress(ipAdress), NetworkUtility.findNicConstructor(macAddress));
-                            if(ipAddress == currentDeviceDefaultGatewayIPAddress)
-                            {
-                                onlineDevice.Info = "Votre routeur";
-                            }
-                            onlineDevices.Add(onlineDevice);
-                        }
-                        
-                        else
-                        {
-                            onlineDevices.Add(currentDevice);
-                        }
-                    }));
-                    trd.IsBackground = true;
-                    trd.Start();
-                    
-                }
-            }
-        }
-
         private async void startBtn_Click(object sender, EventArgs e)
         {    
             if (selectedAdaptaterName != "")
             {
                 startBtn.Enabled = false;
-                await Task.Run(() => { PingSweep(); });
-                
-
-                int nbItem = 0;
-                foreach(Device device in onlineDevices)
-                {
-                    listView1.Items.Add(new ListViewItem(new String[] { device.DomainName, device.IpAddress, device.MacAddress, device.Info, device.AdaptatorConstructor, "", DateTime.Now.ToString() }));
-                    listView1.Items[nbItem].ImageIndex = 1;
-                    nbItem++;
-                }
-
+                backgroundWorker1.RunWorkerAsync();
                 startBtn.Enabled = true;
             }
             else
-            {
-                MessageBox.Show("Aucune carte réseau sélectionnée");
+            { 
+                MessageBox.Show("Aucune carte réseau sélectionnée","Alerte",MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
         }
 
         //Stop analysis
         private void stopBtn_Click(object sender, EventArgs e)
         {
-            if(startBtn.Enabled == false)
+            if (backgroundWorker1.WorkerSupportsCancellation == true)
             {
-                startBtn.Enabled = true;
+                // Cancel the asynchronous operation.
+                backgroundWorker1.CancelAsync();
             }
+            startBtn.Enabled = true;
         }
 
         private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)
@@ -203,6 +160,82 @@ namespace MIMIRSOFT
             // Perform the sort with these new sort options.
             this.listView1.Sort();
         }
+
+        private void completedPing(object sender, PingCompletedEventArgs e)
+        {
+            string ipAdress = (string)e.Reply.Address.ToString();
+            if (e.Reply != null && e.Reply.Status == IPStatus.Success)
+            {
+                if (ipAdress != currentDevice.IpAddress)
+                {
+                    string macAddress = NetworkUtility.getMacAddress(ipAdress).ToUpper();
+                    Device onlineDevice = new Device(ipAdress, macAddress, NetworkUtility.getDnsNameOfIpAddress(ipAdress), NetworkUtility.findNicConstructor(macAddress));
+                    if (ipAdress == currentDeviceDefaultGatewayIPAddress)
+                    {
+                        onlineDevice.Info = "Votre routeur";
+                    }
+
+                    onlineDevices.Add(onlineDevice);
+                    UpdateNetworkListView(onlineDevice, onlineDevices.IndexOf(onlineDevice));
+                    
+
+                }
+                else
+                {
+                    onlineDevices.Add(currentDevice);
+                    UpdateNetworkListView(currentDevice, onlineDevices.IndexOf(currentDevice));
+                }
+            }
             
+        }
+
+
+        delegate void UpdateNetworkListViewDelegate(Device device,int index);
+
+        void UpdateNetworkListView(Device device, int index)
+        {
+            if (InvokeRequired)
+            {
+                this.Invoke(new UpdateNetworkListViewDelegate(UpdateNetworkListView), device,index);
+                return;
+            }
+
+            this.listView1.Items.Add(new ListViewItem(new String[] { device.IpAddress, device.DomainName, device.MacAddress, device.Info, device.AdaptatorConstructor, "", DateTime.Now.ToString() }));
+            listView1.Items[index].ImageIndex = 1;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (backgroundWorker1.IsBusy != true)
+            {
+                // Start the asynchronous operation.
+                backgroundWorker1.RunWorkerAsync();
+            }
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+            
+            int addressNumber = NetworkUtility.getNumberOfAvailableAddresses(currentDeviceWildCardMask);
+            for (int i = 1; i < addressNumber; i++)
+            {
+                if (worker.CancellationPending == true)
+                {
+                    e.Cancel = true;
+                    break;
+                }
+                else
+                {
+                    // Perform a time consuming operation and report progress.
+                    Ping pingSender = new Ping();
+                    string ipAddress = NetworkUtility.generateIpAddress(currentDeviceNetworkIPAddress, i);
+                    pingSender.PingCompleted += new PingCompletedEventHandler(completedPing);
+                    pingSender.SendAsync(ipAddress, 50);
+                }
+
+            }
+          
+        }
     }
 }

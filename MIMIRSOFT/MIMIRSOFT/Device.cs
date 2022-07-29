@@ -70,5 +70,20 @@ namespace MIMIRSOFT
             get { return lastDetection; }
             set { lastDetection = value; }
         }
+
+        /*public  bool Equals(Device anotherDevice)
+        {
+            if(this.IpAddress == anotherDevice.IpAddress)
+            {
+                if (this.MacAddress == anotherDevice.MacAddress)
+                {
+                    if (this.DomainName == anotherDevice.DomainName)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }*/
     }
 }
