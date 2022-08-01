@@ -10,6 +10,8 @@ namespace MIMIRSOFT
         private Dictionary<string,NetworkInterface> UpAdapters  = new Dictionary<string, NetworkInterface>();
 
         private string selectedAdaptaterName = "";
+        private string selectedRefreshTime = "";
+
         private string[] currentDeviceNetworkIPAddress;
         private string currentDeviceWildCardMask;
         private Device currentDevice = new Device();
@@ -31,10 +33,14 @@ namespace MIMIRSOFT
             //Load available network adaptater's into "Carte reseau" tool strip and make them available
             InitializeNetWorkAdaptater();
             MakeNetWorkAdaptaterToolStripCheckable();
-            timer1.Interval = 1000 * 30;
-            //timer1.Interval = Int32.Parse(sToolStripMenuItem.Text.Substring(0,1)) * 1000 * 60;
+            
+            timer1.Interval = Int32.Parse(sToolStripMenuItem.Text.Substring(0,2)) * 1000;
 
         }
+
+        delegate void UpdateNetworkListViewDelegate(Device device, int index);
+        delegate void UpdateUnavailableDetectedDevice(int index);
+        delegate void UpdateAvailableDetectedDevice(int index);
 
         public void MakeNetWorkAdaptaterToolStripCheckable()
         {
@@ -111,18 +117,47 @@ namespace MIMIRSOFT
             }
         }
 
+        private void périodeDeRafraîchissementToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (selectedRefreshTime != e.ClickedItem.ToString())
+            {
+                if (e.ClickedItem.ToString() == "10 sec")
+                {
+                    sToolStripMenuItem1.Checked = false;
+                    sToolStripMenuItem2.Checked = false;
+                }
+                else if (e.ClickedItem.ToString() == "20 sec")
+                {
+                    sToolStripMenuItem.Checked = false;
+                    sToolStripMenuItem1.Checked = false;
+                }
+                else if (e.ClickedItem.ToString() == "15 sec")
+                {
+                    sToolStripMenuItem.Checked = false;
+                    sToolStripMenuItem2.Checked = false;
+                }
+
+                selectedRefreshTime = e.ClickedItem.ToString();
+                timer1.Interval = Int32.Parse(selectedRefreshTime.Substring(0, 2)) * 1000;
+            }
+            else
+            {
+                selectedRefreshTime = "";
+            }
+        }
+
         private async void startBtn_Click(object sender, EventArgs e)
-        {    
+        {
+            startBtn.Enabled = false;
             if (selectedAdaptaterName != "")
             {
-                startBtn.Enabled = false;
                 backgroundWorker1.RunWorkerAsync();
-                startBtn.Enabled = true;
             }
             else
             { 
                 MessageBox.Show("Aucune carte réseau sélectionnée.","Alerte",MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            startBtn.Enabled = true;
         }
 
         //Stop analysis
@@ -162,6 +197,7 @@ namespace MIMIRSOFT
             this.listView1.Sort();
         }
 
+
         private void completedPing(object sender, PingCompletedEventArgs e)
         {
             string ipAdress = (string)e.Reply.Address.ToString();
@@ -190,10 +226,6 @@ namespace MIMIRSOFT
         }
 
 
-        delegate void UpdateNetworkListViewDelegate(Device device,int index);
-        delegate void UpdateUnavailableDetectedDevice(int index);
-        delegate void UpdateAvailableDetectedDevice(int index);
-
         void UpdateNetworkListView(Device device, int index)
         {
             if (InvokeRequired)
@@ -213,9 +245,10 @@ namespace MIMIRSOFT
                 this.Invoke(new UpdateUnavailableDetectedDevice(UpdateUnavailableDevice), index);
                 return;
             }
-            
-            this.listView1.Items[index].ImageIndex = 0;
+
+            detectedDevices[index].LastDetection = DateTime.Now.ToString();
             this.listView1.Items[index].SubItems[6].Text = DateTime.Now.ToString();
+            this.listView1.Items[index].ImageIndex = 0;
         }
 
         void UpdateAvailableDevice(int index)
@@ -226,6 +259,7 @@ namespace MIMIRSOFT
                 return;
             }
 
+            detectedDevices[index].LastDetection = DateTime.Now.ToString();
             this.listView1.Items[index].ImageIndex = 1;
             this.listView1.Items[index].SubItems[6].Text = DateTime.Now.ToString();
         }
@@ -255,26 +289,24 @@ namespace MIMIRSOFT
                 {
                     // Perform a time consuming operation and report progress.
                     string ipAddress = NetworkUtility.generateIpAddress(currentDeviceNetworkIPAddress, i);
-                    Ping pingSender = new Ping();
-                    
+
                     if (detectedDevices.Exists(x => x.IpAddress == ipAddress))
                     {
+                        Ping pingSender = new Ping();
                         PingReply reply = pingSender.Send(ipAddress, 50);
-                        
+                        int index = detectedDevices.FindIndex(x => x.IpAddress == ipAddress);
                         if (reply.Status == IPStatus.Success)
                         {
-                            int index = detectedDevices.FindIndex(x => x.IpAddress == ipAddress);
                             UpdateAvailableDevice(index); 
                         }
-                        else
-                        {
-                            int index = detectedDevices.FindIndex(x => x.IpAddress == ipAddress);
+                        else if(reply.Status == IPStatus.TimedOut) {
                             UpdateUnavailableDevice(index);
                         }
                      
                     }
                     else
                     {
+                        Ping pingSender = new Ping();
                         pingSender.PingCompleted += new PingCompletedEventHandler(completedPing);
                         pingSender.SendAsync(ipAddress, 50);
                     }
@@ -284,5 +316,37 @@ namespace MIMIRSOFT
             }
           
         }
+
+        private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            
+            saveBtn.Enabled = true;
+            detailBtn.Enabled = true;
+            
+            if (e.IsSelected)
+            {
+                System.Text.StringBuilder messageBoxCS = new System.Text.StringBuilder();
+                messageBoxCS.AppendFormat("{0} = {1}", "Item", e.Item);
+                messageBoxCS.AppendLine();
+                messageBoxCS.AppendFormat("{0} = {1}", "IP ADDRESS", e.Item.SubItems[0].ToString());
+                messageBoxCS.AppendLine();
+                messageBoxCS.AppendFormat("{0} = {1}", "DEVICE NAME", e.Item.SubItems[1].ToString());
+                messageBoxCS.AppendLine();
+                messageBoxCS.AppendFormat("{0} = {1}", "MAC ADDRESS", e.Item.SubItems[2].ToString());
+                messageBoxCS.AppendLine();
+                messageBoxCS.AppendFormat("{0} = {1}", "INFO", e.Item.SubItems[3].ToString());
+                messageBoxCS.AppendLine();
+                messageBoxCS.AppendFormat("{0} = {1}", "CONSTRUCTOR", e.Item.SubItems[4].ToString());
+                messageBoxCS.AppendLine();
+                messageBoxCS.AppendFormat("{0} = {1}", "FIRST DETECTION", e.Item.SubItems[5].ToString());
+                messageBoxCS.AppendLine();
+                messageBoxCS.AppendFormat("{0} = {1}", "LAST DETECTION", e.Item.SubItems[6].ToString());
+                messageBoxCS.AppendLine();
+                MessageBox.Show(messageBoxCS.ToString(), "ItemSelectionChanged Event");
+            }
+            saveBtn.Enabled = false;
+            detailBtn.Enabled = false;
+        }
+
     }
 }

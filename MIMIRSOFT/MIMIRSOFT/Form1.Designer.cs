@@ -53,7 +53,6 @@
             this.saveBtn = new System.Windows.Forms.ToolStripButton();
             this.detailBtn = new System.Windows.Forms.ToolStripButton();
             this.searchBtn = new System.Windows.Forms.ToolStripButton();
-            this.refreshBtn = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.listView1 = new System.Windows.Forms.ListView();
@@ -186,6 +185,7 @@
             this.périodeDeRafraîchissementToolStripMenuItem.Name = "périodeDeRafraîchissementToolStripMenuItem";
             this.périodeDeRafraîchissementToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.périodeDeRafraîchissementToolStripMenuItem.Text = "Période de rafraîchissement ";
+            this.périodeDeRafraîchissementToolStripMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.périodeDeRafraîchissementToolStripMenuItem_DropDownItemClicked);
             // 
             // sToolStripMenuItem
             // 
@@ -193,22 +193,22 @@
             this.sToolStripMenuItem.CheckOnClick = true;
             this.sToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.sToolStripMenuItem.Name = "sToolStripMenuItem";
-            this.sToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
-            this.sToolStripMenuItem.Text = "1 min ";
+            this.sToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
+            this.sToolStripMenuItem.Text = "10 sec";
             // 
             // sToolStripMenuItem1
             // 
             this.sToolStripMenuItem1.CheckOnClick = true;
             this.sToolStripMenuItem1.Name = "sToolStripMenuItem1";
-            this.sToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
-            this.sToolStripMenuItem1.Text = "2 min";
+            this.sToolStripMenuItem1.Size = new System.Drawing.Size(106, 22);
+            this.sToolStripMenuItem1.Text = "15 sec";
             // 
             // sToolStripMenuItem2
             // 
             this.sToolStripMenuItem2.CheckOnClick = true;
             this.sToolStripMenuItem2.Name = "sToolStripMenuItem2";
-            this.sToolStripMenuItem2.Size = new System.Drawing.Size(107, 22);
-            this.sToolStripMenuItem2.Text = "5 min";
+            this.sToolStripMenuItem2.Size = new System.Drawing.Size(106, 22);
+            this.sToolStripMenuItem2.Text = "20 sec";
             // 
             // aideToolStripMenuItem
             // 
@@ -232,8 +232,7 @@
             this.stopBtn,
             this.saveBtn,
             this.detailBtn,
-            this.searchBtn,
-            this.refreshBtn});
+            this.searchBtn});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1063, 25);
@@ -291,15 +290,6 @@
             this.searchBtn.Size = new System.Drawing.Size(23, 22);
             this.searchBtn.Text = "Filtrer";
             // 
-            // refreshBtn
-            // 
-            this.refreshBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.refreshBtn.Image = ((System.Drawing.Image)(resources.GetObject("refreshBtn.Image")));
-            this.refreshBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.refreshBtn.Name = "refreshBtn";
-            this.refreshBtn.Size = new System.Drawing.Size(23, 22);
-            this.refreshBtn.Text = "Rafraîchir ";
-            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
@@ -341,6 +331,7 @@
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView1_ColumnClick);
+            this.listView1.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listView1_ItemSelectionChanged);
             // 
             // ipAddress
             // 
@@ -503,7 +494,6 @@
         private ToolStripButton saveBtn;
         private ToolStripButton detailBtn;
         private ToolStripButton searchBtn;
-        private ToolStripButton refreshBtn;
         private TabControl tabControl1;
         private TabPage tabPage1;
         private TabPage tabPage2;
