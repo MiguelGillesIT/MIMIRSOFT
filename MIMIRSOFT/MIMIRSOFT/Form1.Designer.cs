@@ -32,7 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fichierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lancerLeScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveElementsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NetAdaptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.typeDeRéseauToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -99,16 +99,18 @@
             // fichierToolStripMenuItem
             // 
             this.fichierToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lancerLeScanToolStripMenuItem});
+            this.saveElementsToolStripMenuItem});
             this.fichierToolStripMenuItem.Name = "fichierToolStripMenuItem";
             this.fichierToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
             this.fichierToolStripMenuItem.Text = "Fichier";
             // 
-            // lancerLeScanToolStripMenuItem
+            // saveElementsToolStripMenuItem
             // 
-            this.lancerLeScanToolStripMenuItem.Name = "lancerLeScanToolStripMenuItem";
-            this.lancerLeScanToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.lancerLeScanToolStripMenuItem.Text = "Sauvegarder les éléments";
+            this.saveElementsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveElementsToolStripMenuItem.Image")));
+            this.saveElementsToolStripMenuItem.Name = "saveElementsToolStripMenuItem";
+            this.saveElementsToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.saveElementsToolStripMenuItem.Text = "Sauvegarder les éléments";
+            this.saveElementsToolStripMenuItem.Click += new System.EventHandler(this.saveElementsToolStripMenuItem_Click);
             // 
             // optionsToolStripMenuItem
             // 
@@ -270,6 +272,7 @@
             this.saveBtn.Name = "saveBtn";
             this.saveBtn.Size = new System.Drawing.Size(23, 22);
             this.saveBtn.Text = "Sauvegarder l\'élément";
+            this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
             // 
             // detailBtn
             // 
@@ -280,6 +283,7 @@
             this.detailBtn.Name = "detailBtn";
             this.detailBtn.Size = new System.Drawing.Size(23, 22);
             this.detailBtn.Text = "Détails de l\'élément";
+            this.detailBtn.Click += new System.EventHandler(this.detailBtn_Click);
             // 
             // searchBtn
             // 
@@ -313,6 +317,7 @@
             // 
             // listView1
             // 
+            this.listView1.Activation = System.Windows.Forms.ItemActivation.TwoClick;
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.ipAddress,
             this.deviceName,
@@ -332,6 +337,7 @@
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView1_ColumnClick);
             this.listView1.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listView1_ItemSelectionChanged);
+            this.listView1.DoubleClick += new System.EventHandler(this.listView1_DoubleClick);
             // 
             // ipAddress
             // 
@@ -487,7 +493,7 @@
 
         private MenuStrip menuStrip1;
         private ToolStripMenuItem fichierToolStripMenuItem;
-        private ToolStripMenuItem lancerLeScanToolStripMenuItem;
+        private ToolStripMenuItem saveElementsToolStripMenuItem;
         private ToolStrip toolStrip1;
         private ToolStripButton startBtn;
         private ToolStripButton stopBtn;

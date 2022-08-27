@@ -173,9 +173,9 @@ namespace MIMIRSOFT
                 else
                 {
                     MessageBox.Show("Aucune carte réseau sélectionnée.", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    startBtn.Enabled = true;
                 }
             } 
-            startBtn.Enabled = true;
         }
 
         //Stop analysis
@@ -184,10 +184,8 @@ namespace MIMIRSOFT
             if (backgroundWorker1.WorkerSupportsCancellation == true)
             {
                 // Cancel the asynchronous operation.
-                backgroundWorker1.CancelAsync();
-                
+                backgroundWorker1.CancelAsync();  
             }
-            
         }
 
         private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)
@@ -216,38 +214,15 @@ namespace MIMIRSOFT
             this.listView1.Sort();
         }
 
-        private void detectedDeviceCompletedPing(object sender, PingCompletedEventArgs e)
-        {
-            string ipAdress = (string)e.Reply.Address.ToString();
-            if (e.Reply != null && e.Reply.Status == IPStatus.Success)
-            {
-                availabledetectedHost.Add(ipAdress);
-                /*if (ipAdress != currentDevice.IpAddress)
-                {
-                    string macAddress = NetworkUtility.getMacAddress(ipAdress).ToUpper();
-                    Device onlineDevice = new Device(ipAdress, macAddress, NetworkUtility.getDnsNameOfIpAddress(ipAdress), NetworkUtility.findNicConstructor(macAddress), "", DateTime.Now.ToString(), DateTime.Now.ToString());
-                    if (ipAdress == currentDeviceDefaultGatewayIPAddress)
-                    {
-                        onlineDevice.Info = "Votre routeur";
-                    }
-            }
-            else
-                {
-                    availabledetectedHost.Add(currentDevice);
-                } */
-            }
-        }
-
         private void completedPing(object sender, PingCompletedEventArgs e)
         {
             string ipAdress = (string)e.Reply.Address.ToString();
             if (e.Reply != null && e.Reply.Status == IPStatus.Success)
             {
                 detectedHost.Add(ipAdress);
-                UpdateNetworkListView(ipAdress);   
-            }  
+                UpdateNetworkListView(ipAdress);
+            }
         }
-
 
         void UpdateNetworkListView(string ipAdress)
         {
@@ -282,8 +257,9 @@ namespace MIMIRSOFT
                 this.Invoke(new UpdateUnavailableDetectedDevice(UpdateUnavailableDevice), ipAdress);
                 return;
             }
-            this.listView1.Items[detectedHost.IndexOf(ipAdress)].SubItems[6].Text = DateTime.Now.ToString();
             this.listView1.Items[detectedHost.IndexOf(ipAdress)].ImageIndex = 0;
+            this.listView1.Items[detectedHost.IndexOf(ipAdress)].SubItems[6].Text = DateTime.Now.ToString();
+            
         }
 
         void UpdateAvailableDevice(String ipAdress)
@@ -308,7 +284,7 @@ namespace MIMIRSOFT
                 }
                 
             }
-
+            
             AddNetworkAdaptater();
             MakeNetWorkAdaptaterToolStripCheckable();
 
@@ -322,20 +298,19 @@ namespace MIMIRSOFT
             {
                 if (worker.CancellationPending != true)
                 {
-                    
                     // Perform a time consuming operation and report progress.
                     string ipAddress = NetworkUtility.generateIpAddress(currentDeviceNetworkIPAddress, i);
                     if (detectedHost.Contains(ipAddress))
                     {
                         Ping pingSender = new Ping();
                         PingReply reply = pingSender.Send(ipAddress, 200);
-                        if (reply.Status == IPStatus.TimedOut)
+                        if (reply.Status == IPStatus.Success)
                         {
-                            UpdateUnavailableDevice(ipAddress);
+                            UpdateAvailableDevice(ipAddress);
                         }
                         else
                         {
-                            UpdateAvailableDevice(ipAddress);
+                            UpdateUnavailableDevice(ipAddress);
                         }
                     }
                     else
@@ -349,42 +324,156 @@ namespace MIMIRSOFT
                 else
                 {
                     e.Cancel = true;
+                    //return;
                     break;
                 }
 
+            }  
+        }
+
+        private void listView1_DoubleClick(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 1)
+            {
+                    System.Text.StringBuilder messageBoxCS = new System.Text.StringBuilder();
+                    messageBoxCS.AppendLine();
+                    messageBoxCS.AppendFormat("{0} = {1}", "IP ADDRESS", listView1.SelectedItems[0].SubItems[0].ToString());
+                    messageBoxCS.AppendLine();
+                    messageBoxCS.AppendFormat("{0} = {1}", "DEVICE NAME", listView1.SelectedItems[0].SubItems[1].ToString());
+                    messageBoxCS.AppendLine();
+                    messageBoxCS.AppendFormat("{0} = {1}", "MAC ADDRESS", listView1.SelectedItems[0].SubItems[2].ToString());
+                    messageBoxCS.AppendLine();
+                    messageBoxCS.AppendFormat("{0} = {1}", "INFO", listView1.SelectedItems[0].SubItems[3].ToString());
+                    messageBoxCS.AppendLine();
+                    messageBoxCS.AppendFormat("{0} = {1}", "CONSTRUCTOR", listView1.SelectedItems[0].SubItems[4].ToString());
+                    messageBoxCS.AppendLine();
+                    messageBoxCS.AppendFormat("{0} = {1}", "FIRST DETECTION", listView1.SelectedItems[0].SubItems[5].ToString());
+                    messageBoxCS.AppendLine();
+                    messageBoxCS.AppendFormat("{0} = {1}", "LAST DETECTION", listView1.SelectedItems[0].SubItems[6].ToString());
+                    messageBoxCS.AppendLine();
+                    MessageBox.Show(messageBoxCS.ToString(), "ItemSelectionChanged Event");  
             }
-            //IEnumerable<String> unaivailableDevices = detectedHost.Except(availabledetectedHost);
         }
 
         private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            
-            saveBtn.Enabled = true;
-            detailBtn.Enabled = true;
-            
-            if (e.IsSelected)
+            if (listView1.SelectedItems.Count == 1)
             {
-                System.Text.StringBuilder messageBoxCS = new System.Text.StringBuilder();
-                messageBoxCS.AppendFormat("{0} = {1}", "Item", e.Item);
-                messageBoxCS.AppendLine();
-                messageBoxCS.AppendFormat("{0} = {1}", "IP ADDRESS", e.Item.SubItems[0].ToString());
-                messageBoxCS.AppendLine();
-                messageBoxCS.AppendFormat("{0} = {1}", "DEVICE NAME", e.Item.SubItems[1].ToString());
-                messageBoxCS.AppendLine();
-                messageBoxCS.AppendFormat("{0} = {1}", "MAC ADDRESS", e.Item.SubItems[2].ToString());
-                messageBoxCS.AppendLine();
-                messageBoxCS.AppendFormat("{0} = {1}", "INFO", e.Item.SubItems[3].ToString());
-                messageBoxCS.AppendLine();
-                messageBoxCS.AppendFormat("{0} = {1}", "CONSTRUCTOR", e.Item.SubItems[4].ToString());
-                messageBoxCS.AppendLine();
-                messageBoxCS.AppendFormat("{0} = {1}", "FIRST DETECTION", e.Item.SubItems[5].ToString());
-                messageBoxCS.AppendLine();
-                messageBoxCS.AppendFormat("{0} = {1}", "LAST DETECTION", e.Item.SubItems[6].ToString());
-                messageBoxCS.AppendLine();
-                MessageBox.Show(messageBoxCS.ToString(), "ItemSelectionChanged Event");
+                saveBtn.Enabled = true;
+                detailBtn.Enabled = true; 
             }
-            saveBtn.Enabled = false;
-            detailBtn.Enabled = false;
+            else
+            {
+                saveBtn.Enabled = false;
+                detailBtn.Enabled = false;
+            }
+           
+        }
+
+        private void saveBtn_Click(object sender, EventArgs e)
+        {
+            String ipAddress = listView1.SelectedItems[0].SubItems[0].ToString().Substring(18).Trim('}');
+            String macAdress = listView1.SelectedItems[0].SubItems[2].ToString().Substring(18).Trim('}');
+            String deviceName = listView1.SelectedItems[0].SubItems[1].ToString().Substring(18).Trim('}');
+            String deviceInfo = listView1.SelectedItems[0].SubItems[3].ToString().Substring(18).Trim('}');
+            String deviceConstructor = listView1.SelectedItems[0].SubItems[4].ToString().Substring(18).Trim('}');
+            String firstDetection = listView1.SelectedItems[0].SubItems[5].ToString().Substring(18).Trim('}');
+            String lastDetection = listView1.SelectedItems[0].SubItems[6].ToString().Substring(18).Trim('}');
+            
+            String clipBoardInfo = "///////////////////////////////////////////////// \n";
+            clipBoardInfo += "Adresse IP --> " + ipAddress  + "  \n";
+            clipBoardInfo += "Adresse MAC --> " + macAdress + "  \n";
+            clipBoardInfo += "Périphérique --> " + deviceName + "  \n";
+            clipBoardInfo += "Information --> " + deviceInfo + "  \n";
+            clipBoardInfo += "Constructeur --> " + deviceConstructor + "  \n";
+            clipBoardInfo += "Premiere Détection --> " + firstDetection + "  \n";
+            clipBoardInfo += "Dernière Détection --> " + lastDetection + "  \n";
+            clipBoardInfo += "///////////////////////////////////////////////// \n";
+
+            Clipboard.SetDataObject(clipBoardInfo);
+            
+        }
+
+        private void detailBtn_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.Filter = "txt files (*.txt)|*.txt";
+            saveFileDialog.FilterIndex = 2;
+            saveFileDialog.DefaultExt = "txt";
+            saveFileDialog.RestoreDirectory = true;
+            saveFileDialog.Title = "Sauvegarder un périphérique";
+            saveFileDialog.InitialDirectory = "c:\\";
+
+            String ipAddress = listView1.SelectedItems[0].SubItems[0].ToString().Substring(18).Trim('}');
+            String macAdress = listView1.SelectedItems[0].SubItems[2].ToString().Substring(18).Trim('}');
+            String deviceName = listView1.SelectedItems[0].SubItems[1].ToString().Substring(18).Trim('}');
+            String deviceInfo = listView1.SelectedItems[0].SubItems[3].ToString().Substring(18).Trim('}');
+            String deviceConstructor = listView1.SelectedItems[0].SubItems[4].ToString().Substring(18).Trim('}');
+            String firstDetection = listView1.SelectedItems[0].SubItems[5].ToString().Substring(18).Trim('}');
+            String lastDetection = listView1.SelectedItems[0].SubItems[6].ToString().Substring(18).Trim('}');
+
+            String saveInfo = "///////////////////////////////////////////////// \n";
+            saveInfo += "Adresse IP --> " + ipAddress + "  \n";
+            saveInfo += "Adresse MAC --> " + macAdress + "  \n";
+            saveInfo += "Périphérique --> " + deviceName + "  \n";
+            saveInfo += "Information --> " + deviceInfo + "  \n";
+            saveInfo += "Constructeur --> " + deviceConstructor + "  \n";
+            saveInfo += "Premiere Détection --> " + firstDetection + "  \n";
+            saveInfo += "Dernière Détection --> " + lastDetection + "  \n";
+            saveInfo += "///////////////////////////////////////////////// \n";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                File.WriteAllText(saveFileDialog.FileName, saveInfo);
+            }
+        }
+
+        private String PadCenter(string original, int totalWidth, char paddingChar = ' ')
+        {
+            int spaces = totalWidth - original.Length;
+            int padLeft = spaces / 2 + original.Length;
+            return original.PadLeft(padLeft, paddingChar).PadRight(totalWidth, paddingChar);
+        }
+
+        private void saveElementsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count > 1)
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+                saveFileDialog.Filter = "txt files (*.txt)|*.txt";
+                saveFileDialog.FilterIndex = 2;
+                saveFileDialog.DefaultExt = "txt";
+                saveFileDialog.RestoreDirectory = true;
+                saveFileDialog.Title = "Sauvegarder un périphérique";
+                saveFileDialog.InitialDirectory = "c:\\";
+
+                String saveInfo = "+-----+-----------------+--------------------+-------------------------------+---------------------+----------------------------------+---------------------+---------------------+ \n";
+                saveInfo += "|     |                 |                    |                               |                     |                                  |                     |                     | \n";
+                saveInfo += "|  N° |   Adresse IP    |     Adresse MAC    |         Périphérique          |     Information     |           Constructeur           |  Premiere Détection |  Dernière Détection | \n";
+                saveInfo += "|     |                 |                    |                               |                     |                                  |                     |                     | \n";
+                saveInfo += "+-----+-----------------+--------------------+-------------------------------+---------------------+----------------------------------+---------------------+---------------------+ \n";
+                
+                for (int i = 0; i < listView1.SelectedItems.Count; i++)
+                {
+                    String ipAddress = listView1.SelectedItems[i].SubItems[0].ToString().Substring(18).Trim('}');
+                    String macAdress = listView1.SelectedItems[i].SubItems[2].ToString().Substring(18).Trim('}');
+                    String deviceName = listView1.SelectedItems[i].SubItems[1].ToString().Substring(18).Trim('}');
+                    String deviceInfo = listView1.SelectedItems[i].SubItems[3].ToString().Substring(18).Trim('}');
+                    String deviceConstructor = listView1.SelectedItems[i].SubItems[4].ToString().Substring(18).Trim('}');
+                    String firstDetection = listView1.SelectedItems[i].SubItems[5].ToString().Substring(18).Trim('}');
+                    String lastDetection = listView1.SelectedItems[i].SubItems[6].ToString().Substring(18).Trim('}');
+
+                    saveInfo += "|" + PadCenter((i + 1).ToString(),5) + "|" + PadCenter(ipAddress,17) + "|" + PadCenter(macAdress,20) + "|" + PadCenter(deviceName,31) + "|" + PadCenter(deviceInfo,21) + "|" + PadCenter(deviceConstructor,34) + "|" + PadCenter(firstDetection,21) + "|" + PadCenter(lastDetection,21) + "| \n";
+                    saveInfo += "+-----+-----------------+--------------------+-------------------------------+---------------------+----------------------------------+---------------------+---------------------+ \n";
+                }
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    File.WriteAllText(saveFileDialog.FileName, saveInfo);
+                }
+            }
+
         }
     }
 }
