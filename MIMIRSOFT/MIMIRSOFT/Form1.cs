@@ -18,29 +18,29 @@ namespace MIMIRSOFT
         private string currentDeviceDefaultGatewayIPAddress;
 
         
-        private List<Device> detectedDevices = new List<Device>();
+        private List<String> detectedHost = new List<String>();
+        private List<String> availabledetectedHost = new List<String>();
 
-       
+
         public Form1()
         {
             InitializeComponent();
             lvwColumnSorter = new ListViewColumnSorter();
             this.listView1.ListViewItemSorter = lvwColumnSorter;
-
         }
         private void Form1_Load(object sender, EventArgs e)
         {
             //Load available network adaptater's into "Carte reseau" tool strip and make them available
-            InitializeNetWorkAdaptater();
+            AddNetworkAdaptater();
             MakeNetWorkAdaptaterToolStripCheckable();
             
             timer1.Interval = Int32.Parse(sToolStripMenuItem.Text.Substring(0,2)) * 1000;
 
         }
 
-        delegate void UpdateNetworkListViewDelegate(Device device, int index);
-        delegate void UpdateUnavailableDetectedDevice(int index);
-        delegate void UpdateAvailableDetectedDevice(int index);
+        delegate void UpdateNetworkListViewDelegate(String ipAdress);
+        delegate void UpdateUnavailableDetectedDevice(String ipAdress);
+        delegate void UpdateAvailableDetectedDevice(String ipAdress);
 
         public void MakeNetWorkAdaptaterToolStripCheckable()
         {
@@ -51,7 +51,7 @@ namespace MIMIRSOFT
         }
         
         //Add network adaptater into Upadaptater dictionnary and in "Carte Reseau" Tool Strip
-        public void InitializeNetWorkAdaptater()
+        public void AddNetworkAdaptater()
         {
             foreach (NetworkInterface adapter in NetworkInterface.GetAllNetworkInterfaces())
             {
@@ -63,8 +63,11 @@ namespace MIMIRSOFT
                         {
                             if(adapter.NetworkInterfaceType != NetworkInterfaceType.Loopback)
                             {
-                                UpAdapters.Add(adapter.Name, adapter);
-                                NetAdaptToolStripMenuItem.DropDown.Items.Add(adapter.Name);
+                                if (!UpAdapters.ContainsKey(adapter.Name))
+                                {
+                                    UpAdapters.Add(adapter.Name, adapter);
+                                    NetAdaptToolStripMenuItem.DropDown.Items.Add(adapter.Name);
+                                } 
                             }   
                         }
                     }
@@ -79,10 +82,7 @@ namespace MIMIRSOFT
         {
             if(listView1.Items.Count > 0)
             {
-                for (int i = 0; i <= listView1.Items.Count + 1; i++)
-                {
-                    listView1.Items.RemoveAt(0);
-                }
+                listView1.Items.Clear(); 
             }
             
         }
@@ -90,8 +90,19 @@ namespace MIMIRSOFT
         {
             if (selectedAdaptaterName != e.ClickedItem.ToString())
             {
+                detectedHost.Clear();
                 ClearNetworkListView();
+                backgroundWorker1.CancelAsync();
                 selectedAdaptaterName = e.ClickedItem.ToString();
+
+                foreach (ToolStripMenuItem item in NetAdaptToolStripMenuItem.DropDownItems)
+                {
+                    if(item.Text != selectedAdaptaterName)
+                    {
+                        item.Checked = false;
+                    }
+                }
+
                 foreach (UnicastIPAddressInformation unicastIPAddressInformation in UpAdapters[selectedAdaptaterName].GetIPProperties().UnicastAddresses)
                 {
                     if (unicastIPAddressInformation.Address.AddressFamily == AddressFamily.InterNetwork)
@@ -114,6 +125,10 @@ namespace MIMIRSOFT
             else if (selectedAdaptaterName == e.ClickedItem.ToString())
             {
                 selectedAdaptaterName = "";
+                currentDeviceNetworkIPAddress = new string[0];
+                currentDeviceWildCardMask = "";
+                currentDeviceDefaultGatewayIPAddress = "";
+                currentDevice = new Device();
             }
         }
 
@@ -149,14 +164,17 @@ namespace MIMIRSOFT
         private async void startBtn_Click(object sender, EventArgs e)
         {
             startBtn.Enabled = false;
-            if (selectedAdaptaterName != "")
+            if (backgroundWorker1.IsBusy != true)
             {
-                backgroundWorker1.RunWorkerAsync();
-            }
-            else
-            { 
-                MessageBox.Show("Aucune carte réseau sélectionnée.","Alerte",MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                if (selectedAdaptaterName != "")
+                {
+                    backgroundWorker1.RunWorkerAsync();
+                }
+                else
+                {
+                    MessageBox.Show("Aucune carte réseau sélectionnée.", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            } 
             startBtn.Enabled = true;
         }
 
@@ -167,8 +185,9 @@ namespace MIMIRSOFT
             {
                 // Cancel the asynchronous operation.
                 backgroundWorker1.CancelAsync();
+                
             }
-            startBtn.Enabled = true;
+            
         }
 
         private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)
@@ -197,124 +216,144 @@ namespace MIMIRSOFT
             this.listView1.Sort();
         }
 
+        private void detectedDeviceCompletedPing(object sender, PingCompletedEventArgs e)
+        {
+            string ipAdress = (string)e.Reply.Address.ToString();
+            if (e.Reply != null && e.Reply.Status == IPStatus.Success)
+            {
+                availabledetectedHost.Add(ipAdress);
+                /*if (ipAdress != currentDevice.IpAddress)
+                {
+                    string macAddress = NetworkUtility.getMacAddress(ipAdress).ToUpper();
+                    Device onlineDevice = new Device(ipAdress, macAddress, NetworkUtility.getDnsNameOfIpAddress(ipAdress), NetworkUtility.findNicConstructor(macAddress), "", DateTime.Now.ToString(), DateTime.Now.ToString());
+                    if (ipAdress == currentDeviceDefaultGatewayIPAddress)
+                    {
+                        onlineDevice.Info = "Votre routeur";
+                    }
+            }
+            else
+                {
+                    availabledetectedHost.Add(currentDevice);
+                } */
+            }
+        }
 
         private void completedPing(object sender, PingCompletedEventArgs e)
         {
             string ipAdress = (string)e.Reply.Address.ToString();
             if (e.Reply != null && e.Reply.Status == IPStatus.Success)
             {
-                if (ipAdress != currentDevice.IpAddress)
+                detectedHost.Add(ipAdress);
+                UpdateNetworkListView(ipAdress);   
+            }  
+        }
+
+
+        void UpdateNetworkListView(string ipAdress)
+        {
+            if (InvokeRequired)
+            {
+                this.Invoke(new UpdateNetworkListViewDelegate(UpdateNetworkListView), ipAdress);
+                return;
+            }
+
+            if (ipAdress != currentDevice.IpAddress)
+            {
+                string macAddress = NetworkUtility.getMacAddress(ipAdress).ToUpper();
+                Device onlineDevice = new Device(ipAdress, macAddress, NetworkUtility.getDnsNameOfIpAddress(ipAdress), NetworkUtility.findNicConstructor(macAddress), "",DateTime.Now.ToString(), DateTime.Now.ToString());
+                if (ipAdress == currentDeviceDefaultGatewayIPAddress)
                 {
-                    string macAddress = NetworkUtility.getMacAddress(ipAdress).ToUpper();
-                    Device onlineDevice = new Device(ipAdress, macAddress, NetworkUtility.getDnsNameOfIpAddress(ipAdress), NetworkUtility.findNicConstructor(macAddress), "",DateTime.Now.ToString(), DateTime.Now.ToString());
-                    if (ipAdress == currentDeviceDefaultGatewayIPAddress)
-                    {
-                        onlineDevice.Info = "Votre routeur";
-                    }
-
-                    detectedDevices.Add(onlineDevice);
-                    UpdateNetworkListView(onlineDevice, detectedDevices.IndexOf(onlineDevice));
-
+                    onlineDevice.Info = "Votre routeur";
                 }
-                else
-                {
-                    detectedDevices.Add(currentDevice);
-                    UpdateNetworkListView(currentDevice, detectedDevices.IndexOf(currentDevice));
-                }
+                this.listView1.Items.Add(new ListViewItem(new String[] { onlineDevice.IpAddress, onlineDevice.DomainName, onlineDevice.MacAddress, onlineDevice.Info, onlineDevice.AdaptatorConstructor, onlineDevice.FirstDetection, onlineDevice.LastDetection }));
+                
             }
-            
+            else
+            {
+                this.listView1.Items.Add(new ListViewItem(new String[] { currentDevice.IpAddress, currentDevice.DomainName, currentDevice.MacAddress, currentDevice.Info, currentDevice.AdaptatorConstructor, currentDevice.FirstDetection, currentDevice.LastDetection })); 
+            }
+            this.listView1.Items[detectedHost.IndexOf(ipAdress)].ImageIndex = 1;
         }
 
-
-        void UpdateNetworkListView(Device device, int index)
+        void UpdateUnavailableDevice(String ipAdress)
         {
             if (InvokeRequired)
             {
-                this.Invoke(new UpdateNetworkListViewDelegate(UpdateNetworkListView), device,index);
+                this.Invoke(new UpdateUnavailableDetectedDevice(UpdateUnavailableDevice), ipAdress);
                 return;
             }
-
-            this.listView1.Items.Add(new ListViewItem(new String[] { device.IpAddress, device.DomainName, device.MacAddress, device.Info, device.AdaptatorConstructor, device.FirstDetection, device.LastDetection}));
-            this.listView1.Items[index].ImageIndex = 1;
+            this.listView1.Items[detectedHost.IndexOf(ipAdress)].SubItems[6].Text = DateTime.Now.ToString();
+            this.listView1.Items[detectedHost.IndexOf(ipAdress)].ImageIndex = 0;
         }
 
-        void UpdateUnavailableDevice(int index)
+        void UpdateAvailableDevice(String ipAdress)
         {
             if (InvokeRequired)
             {
-                this.Invoke(new UpdateUnavailableDetectedDevice(UpdateUnavailableDevice), index);
+                this.Invoke(new UpdateAvailableDetectedDevice(UpdateAvailableDevice), ipAdress);
                 return;
             }
-
-            detectedDevices[index].LastDetection = DateTime.Now.ToString();
-            this.listView1.Items[index].SubItems[6].Text = DateTime.Now.ToString();
-            this.listView1.Items[index].ImageIndex = 0;
-        }
-
-        void UpdateAvailableDevice(int index)
-        {
-            if (InvokeRequired)
-            {
-                this.Invoke(new UpdateAvailableDetectedDevice(UpdateAvailableDevice), index);
-                return;
-            }
-
-            detectedDevices[index].LastDetection = DateTime.Now.ToString();
-            this.listView1.Items[index].ImageIndex = 1;
-            this.listView1.Items[index].SubItems[6].Text = DateTime.Now.ToString();
+            this.listView1.Items[detectedHost.IndexOf(ipAdress)].ImageIndex = 1;
+            this.listView1.Items[detectedHost.IndexOf(ipAdress)].SubItems[6].Text = DateTime.Now.ToString();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             if (backgroundWorker1.IsBusy != true)
             {
-                // Start the asynchronous operation.
-                backgroundWorker1.RunWorkerAsync();
+                if (selectedAdaptaterName != "")
+                {
+                    // Start the asynchronous operation.
+                    backgroundWorker1.RunWorkerAsync();
+                }
+                
             }
+
+            AddNetworkAdaptater();
+            MakeNetWorkAdaptaterToolStripCheckable();
+
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
-            
             int addressNumber = NetworkUtility.getNumberOfAvailableAddresses(currentDeviceWildCardMask);
             for (int i = 1; i < addressNumber; i++)
             {
-                if (worker.CancellationPending == true)
+                if (worker.CancellationPending != true)
                 {
-                    e.Cancel = true;
-                    break;
-                }
-                else
-                {
+                    
                     // Perform a time consuming operation and report progress.
                     string ipAddress = NetworkUtility.generateIpAddress(currentDeviceNetworkIPAddress, i);
-
-                    if (detectedDevices.Exists(x => x.IpAddress == ipAddress))
+                    if (detectedHost.Contains(ipAddress))
                     {
                         Ping pingSender = new Ping();
-                        PingReply reply = pingSender.Send(ipAddress, 50);
-                        int index = detectedDevices.FindIndex(x => x.IpAddress == ipAddress);
-                        if (reply.Status == IPStatus.Success)
+                        PingReply reply = pingSender.Send(ipAddress, 200);
+                        if (reply.Status == IPStatus.TimedOut)
                         {
-                            UpdateAvailableDevice(index); 
+                            UpdateUnavailableDevice(ipAddress);
                         }
-                        else if(reply.Status == IPStatus.TimedOut) {
-                            UpdateUnavailableDevice(index);
+                        else
+                        {
+                            UpdateAvailableDevice(ipAddress);
                         }
-                     
                     }
                     else
                     {
                         Ping pingSender = new Ping();
                         pingSender.PingCompleted += new PingCompletedEventHandler(completedPing);
-                        pingSender.SendAsync(ipAddress, 50);
+                        pingSender.SendAsync(ipAddress, 200);
                     }
 
                 }
+                else
+                {
+                    e.Cancel = true;
+                    break;
+                }
 
             }
-          
+            //IEnumerable<String> unaivailableDevices = detectedHost.Except(availabledetectedHost);
         }
 
         private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -347,6 +386,5 @@ namespace MIMIRSOFT
             saveBtn.Enabled = false;
             detailBtn.Enabled = false;
         }
-
     }
 }

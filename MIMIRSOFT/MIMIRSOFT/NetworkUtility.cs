@@ -52,28 +52,37 @@ namespace MIMIRSOFT
 
         public static string findNicConstructor(string macAddress)
         {
-            string macPrefix = macAddress.Substring(0, 8);
-            if (!macPrefix.Contains("-"))
+            if(macAddress.Length != 0)
             {
-                macPrefix = macAddress.Substring(0, 6);
-                foreach (string line in File.ReadLines(@"D:\PROJETS\MIMIRSOFT\macAdaptaterConstructor.txt"))
+                string macPrefix = macAddress.Substring(0, 8);
+                if (!macPrefix.Contains("-"))
                 {
-                    if (line.Contains(macPrefix) & line.Contains("(base 16)"))
+                    macPrefix = macAddress.Substring(0, 6);
+                    foreach (string line in File.ReadLines(@"D:\PROJETS\MIMIRSOFT\macAdaptaterConstructor.txt"))
                     {
-                        return line.Substring(22);
+                        if (line.Contains(macPrefix) & line.Contains("(base 16)"))
+                        {
+                            return line.Substring(22);
+                        }
                     }
                 }
-            }
-            else{
-                foreach (string line in File.ReadLines(@"D:\PROJETS\MIMIRSOFT\macAdaptaterConstructor.txt"))
+                else
                 {
-                    if (line.Contains(macPrefix) & line.Contains("(hex)"))
+                    foreach (string line in File.ReadLines(@"D:\PROJETS\MIMIRSOFT\macAdaptaterConstructor.txt"))
                     {
-                        return line.Substring(18);
+                        if (line.Contains(macPrefix) & line.Contains("(hex)"))
+                        {
+                            return line.Substring(18);
+                        }
                     }
-                } 
+                }
+                return "";
             }
-            return "";
+            else
+            {
+                return "";
+            }
+           
         }
 
         public static string getDnsNameOfIpAddress(string IpAddress)
