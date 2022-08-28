@@ -53,6 +53,7 @@
             this.saveBtn = new System.Windows.Forms.ToolStripButton();
             this.detailBtn = new System.Windows.Forms.ToolStripButton();
             this.searchBtn = new System.Windows.Forms.ToolStripButton();
+            this.resetBtn = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.listView1 = new System.Windows.Forms.ListView();
@@ -76,6 +77,7 @@
             this.state = new System.Windows.Forms.ColumnHeader();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -196,21 +198,21 @@
             this.sToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.sToolStripMenuItem.Name = "sToolStripMenuItem";
             this.sToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
-            this.sToolStripMenuItem.Text = "10 sec";
+            this.sToolStripMenuItem.Text = "30 sec";
             // 
             // sToolStripMenuItem1
             // 
             this.sToolStripMenuItem1.CheckOnClick = true;
             this.sToolStripMenuItem1.Name = "sToolStripMenuItem1";
             this.sToolStripMenuItem1.Size = new System.Drawing.Size(106, 22);
-            this.sToolStripMenuItem1.Text = "15 sec";
+            this.sToolStripMenuItem1.Text = "45 sec";
             // 
             // sToolStripMenuItem2
             // 
             this.sToolStripMenuItem2.CheckOnClick = true;
             this.sToolStripMenuItem2.Name = "sToolStripMenuItem2";
             this.sToolStripMenuItem2.Size = new System.Drawing.Size(106, 22);
-            this.sToolStripMenuItem2.Text = "20 sec";
+            this.sToolStripMenuItem2.Text = "50 sec";
             // 
             // aideToolStripMenuItem
             // 
@@ -234,7 +236,8 @@
             this.stopBtn,
             this.saveBtn,
             this.detailBtn,
-            this.searchBtn});
+            this.searchBtn,
+            this.resetBtn});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1063, 25);
@@ -293,6 +296,16 @@
             this.searchBtn.Name = "searchBtn";
             this.searchBtn.Size = new System.Drawing.Size(23, 22);
             this.searchBtn.Text = "Filtrer";
+            // 
+            // resetBtn
+            // 
+            this.resetBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.resetBtn.Image = ((System.Drawing.Image)(resources.GetObject("resetBtn.Image")));
+            this.resetBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.resetBtn.Name = "resetBtn";
+            this.resetBtn.Size = new System.Drawing.Size(23, 22);
+            this.resetBtn.Text = "Reinitialiser";
+            this.resetBtn.Click += new System.EventHandler(this.resetBtn_Click);
             // 
             // tabControl1
             // 
@@ -537,5 +550,7 @@
         private ColumnHeader Info;
         private System.Windows.Forms.Timer timer1;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker2;
+        private ToolStripButton resetBtn;
     }
 }

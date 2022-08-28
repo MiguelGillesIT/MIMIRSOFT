@@ -16,11 +16,13 @@ namespace MIMIRSOFT
         private string currentDeviceWildCardMask;
         private Device currentDevice = new Device();
         private string currentDeviceDefaultGatewayIPAddress;
-
         
         private List<String> detectedHost = new List<String>();
         private List<String> availabledetectedHost = new List<String>();
 
+        delegate void UpdateNetworkListViewDelegate(String ipAdress);
+        delegate void UpdateUnavailableDetectedDevice(String ipAdress);
+        delegate void UpdateAvailableDetectedDevice(String ipAdress);
 
         public Form1()
         {
@@ -37,10 +39,6 @@ namespace MIMIRSOFT
             timer1.Interval = Int32.Parse(sToolStripMenuItem.Text.Substring(0,2)) * 1000;
 
         }
-
-        delegate void UpdateNetworkListViewDelegate(String ipAdress);
-        delegate void UpdateUnavailableDetectedDevice(String ipAdress);
-        delegate void UpdateAvailableDetectedDevice(String ipAdress);
 
         public void MakeNetWorkAdaptaterToolStripCheckable()
         {
@@ -108,27 +106,29 @@ namespace MIMIRSOFT
                     if (unicastIPAddressInformation.Address.AddressFamily == AddressFamily.InterNetwork)
                     {
                         currentDevice.IpAddress = unicastIPAddressInformation.Address.ToString();
-                        currentDevice.MacAddress = NetworkUtility.getMacAddressOfAdaptater(UpAdapters[selectedAdaptaterName]).ToUpper();
-                        currentDevice.DomainName = NetworkUtility.getDnsNameOfIpAddress(currentDevice.IpAddress);
-                        currentDevice.AdaptatorConstructor = NetworkUtility.findNicConstructor(currentDevice.MacAddress);
+                        currentDevice.MacAddress = NetworkAnalysisUtility.getMacAddressOfAdaptater(UpAdapters[selectedAdaptaterName]).ToUpper();
+                        currentDevice.DomainName = NetworkAnalysisUtility.getDnsNameOfIpAddress(currentDevice.IpAddress);
+                        currentDevice.AdaptatorConstructor = NetworkAnalysisUtility.findNicConstructor(currentDevice.MacAddress);
                         currentDevice.Info = "Votre Machine";
                         currentDevice.MacAddress = currentDevice.MacAddress.Substring(0, 2) + "-" + currentDevice.MacAddress.Substring(2, 2) + "-" + currentDevice.MacAddress.Substring(4, 2) + "-" + currentDevice.MacAddress.Substring(6, 2) + "-" + currentDevice.MacAddress.Substring(8, 2) + "-" + currentDevice.MacAddress.Substring(10, 2);
                         currentDevice.FirstDetection = DateTime.Now.ToString();
                         currentDevice.LastDetection = DateTime.Now.ToString();
 
-                        currentDeviceNetworkIPAddress = NetworkUtility.getSubnetAddress(unicastIPAddressInformation.Address.ToString(), unicastIPAddressInformation.IPv4Mask.ToString()).Split('.');
-                        currentDeviceWildCardMask = NetworkUtility.getWildCardMask(unicastIPAddressInformation.IPv4Mask.ToString());
-                        currentDeviceDefaultGatewayIPAddress = NetworkUtility.getIPV4DefaultGatewayAdressOfAdaptater(UpAdapters[selectedAdaptaterName]);
+                        currentDeviceNetworkIPAddress = NetworkAnalysisUtility.getSubnetAddress(unicastIPAddressInformation.Address.ToString(), unicastIPAddressInformation.IPv4Mask.ToString()).Split('.');
+                        currentDeviceWildCardMask = NetworkAnalysisUtility.getWildCardMask(unicastIPAddressInformation.IPv4Mask.ToString());
+                        currentDeviceDefaultGatewayIPAddress = NetworkAnalysisUtility.getIPV4DefaultGatewayAdressOfAdaptater(UpAdapters[selectedAdaptaterName]);
                     }
                 }
             }
             else if (selectedAdaptaterName == e.ClickedItem.ToString())
             {
+                detectedHost.Clear();
+                ClearNetworkListView();
                 selectedAdaptaterName = "";
-                currentDeviceNetworkIPAddress = new string[0];
+                currentDevice = null;
+                currentDeviceNetworkIPAddress = new string [0];
                 currentDeviceWildCardMask = "";
                 currentDeviceDefaultGatewayIPAddress = "";
-                currentDevice = new Device();
             }
         }
 
@@ -163,7 +163,7 @@ namespace MIMIRSOFT
 
         private async void startBtn_Click(object sender, EventArgs e)
         {
-            startBtn.Enabled = false;
+            
             if (backgroundWorker1.IsBusy != true)
             {
                 if (selectedAdaptaterName != "")
@@ -172,8 +172,7 @@ namespace MIMIRSOFT
                 }
                 else
                 {
-                    MessageBox.Show("Aucune carte réseau sélectionnée.", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    startBtn.Enabled = true;
+                    MessageBox.Show("Aucune carte réseau sélectionnée.", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Error);  
                 }
             } 
         }
@@ -234,8 +233,8 @@ namespace MIMIRSOFT
 
             if (ipAdress != currentDevice.IpAddress)
             {
-                string macAddress = NetworkUtility.getMacAddress(ipAdress).ToUpper();
-                Device onlineDevice = new Device(ipAdress, macAddress, NetworkUtility.getDnsNameOfIpAddress(ipAdress), NetworkUtility.findNicConstructor(macAddress), "",DateTime.Now.ToString(), DateTime.Now.ToString());
+                string macAddress = NetworkAnalysisUtility.getMacAddress(ipAdress).ToUpper();
+                Device onlineDevice = new Device(ipAdress, macAddress, NetworkAnalysisUtility.getDnsNameOfIpAddress(ipAdress), NetworkAnalysisUtility.findNicConstructor(macAddress), "",DateTime.Now.ToString(), DateTime.Now.ToString());
                 if (ipAdress == currentDeviceDefaultGatewayIPAddress)
                 {
                     onlineDevice.Info = "Votre routeur";
@@ -293,13 +292,13 @@ namespace MIMIRSOFT
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
-            int addressNumber = NetworkUtility.getNumberOfAvailableAddresses(currentDeviceWildCardMask);
+            int addressNumber = NetworkAnalysisUtility.getNumberOfAvailableAddresses(currentDeviceWildCardMask);
             for (int i = 1; i < addressNumber; i++)
             {
                 if (worker.CancellationPending != true)
                 {
                     // Perform a time consuming operation and report progress.
-                    string ipAddress = NetworkUtility.generateIpAddress(currentDeviceNetworkIPAddress, i);
+                    string ipAddress = NetworkAnalysisUtility.generateIpAddress(currentDeviceNetworkIPAddress, i);
                     if (detectedHost.Contains(ipAddress))
                     {
                         Ping pingSender = new Ping();
@@ -324,10 +323,9 @@ namespace MIMIRSOFT
                 else
                 {
                     e.Cancel = true;
-                    //return;
                     break;
                 }
-
+                //Thread.Sleep(20);
             }  
         }
 
@@ -474,6 +472,12 @@ namespace MIMIRSOFT
                 }
             }
 
+        }
+
+        private void resetBtn_Click(object sender, EventArgs e)
+        {
+            detectedHost.Clear();
+            ClearNetworkListView();
         }
     }
 }
