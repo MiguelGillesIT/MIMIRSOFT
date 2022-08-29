@@ -218,7 +218,7 @@ namespace MIMIRSOFT
             string ipAdress = (string)e.Reply.Address.ToString();
             if (e.Reply != null && e.Reply.Status == IPStatus.Success)
             {
-                detectedHost.Add(ipAdress);
+                
                 UpdateNetworkListView(ipAdress);
             }
         }
@@ -230,7 +230,7 @@ namespace MIMIRSOFT
                 this.Invoke(new UpdateNetworkListViewDelegate(UpdateNetworkListView), ipAdress);
                 return;
             }
-
+            detectedHost.Add(ipAdress);
             if (ipAdress != currentDevice.IpAddress)
             {
                 string macAddress = NetworkAnalysisUtility.getMacAddress(ipAdress).ToUpper();
@@ -359,12 +359,14 @@ namespace MIMIRSOFT
             if (listView1.SelectedItems.Count == 1)
             {
                 saveBtn.Enabled = true;
-                detailBtn.Enabled = true; 
+                detailBtn.Enabled = true;
+                deleteBtn.Enabled = true;
             }
             else
             {
                 saveBtn.Enabled = false;
                 detailBtn.Enabled = false;
+                deleteBtn.Enabled = false;
             }
            
         }
@@ -479,6 +481,12 @@ namespace MIMIRSOFT
         {
             detectedHost.Clear();
             ClearNetworkListView();
+        }
+
+        private void deleteBtn_Click(object sender, EventArgs e)
+        {
+            detectedHost.RemoveAt(listView1.SelectedItems[0].Index);
+            listView1.SelectedItems[0].Remove();
         }
     }
 }

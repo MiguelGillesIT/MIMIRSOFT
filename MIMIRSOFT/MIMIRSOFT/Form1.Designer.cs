@@ -52,6 +52,7 @@
             this.stopBtn = new System.Windows.Forms.ToolStripButton();
             this.saveBtn = new System.Windows.Forms.ToolStripButton();
             this.detailBtn = new System.Windows.Forms.ToolStripButton();
+            this.deleteBtn = new System.Windows.Forms.ToolStripButton();
             this.searchBtn = new System.Windows.Forms.ToolStripButton();
             this.resetBtn = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -236,6 +237,7 @@
             this.stopBtn,
             this.saveBtn,
             this.detailBtn,
+            this.deleteBtn,
             this.searchBtn,
             this.resetBtn});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
@@ -287,6 +289,17 @@
             this.detailBtn.Size = new System.Drawing.Size(23, 22);
             this.detailBtn.Text = "Détails de l\'élément";
             this.detailBtn.Click += new System.EventHandler(this.detailBtn_Click);
+            // 
+            // deleteBtn
+            // 
+            this.deleteBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.deleteBtn.Enabled = false;
+            this.deleteBtn.Image = ((System.Drawing.Image)(resources.GetObject("deleteBtn.Image")));
+            this.deleteBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.deleteBtn.Name = "deleteBtn";
+            this.deleteBtn.Size = new System.Drawing.Size(23, 22);
+            this.deleteBtn.Text = "Supprimer l\'élément";
+            this.deleteBtn.Click += new System.EventHandler(this.deleteBtn_Click);
             // 
             // searchBtn
             // 
@@ -488,7 +501,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "   MIMRSOFT";
+            this.Text = "   MIMIRSOFT";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -552,5 +565,6 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.ComponentModel.BackgroundWorker backgroundWorker2;
         private ToolStripButton resetBtn;
+        private ToolStripButton deleteBtn;
     }
 }
