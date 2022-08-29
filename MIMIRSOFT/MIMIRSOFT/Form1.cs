@@ -125,7 +125,7 @@ namespace MIMIRSOFT
                 detectedHost.Clear();
                 ClearNetworkListView();
                 selectedAdaptaterName = "";
-                currentDevice = null;
+                currentDevice = new Device();
                 currentDeviceNetworkIPAddress = new string [0];
                 currentDeviceWildCardMask = "";
                 currentDeviceDefaultGatewayIPAddress = "";
@@ -349,7 +349,8 @@ namespace MIMIRSOFT
                     messageBoxCS.AppendLine();
                     messageBoxCS.AppendFormat("{0} = {1}", "LAST DETECTION", listView1.SelectedItems[0].SubItems[6].ToString());
                     messageBoxCS.AppendLine();
-                    MessageBox.Show(messageBoxCS.ToString(), "ItemSelectionChanged Event");  
+                    MessageBox.Show(messageBoxCS.ToString(), "ItemSelectionChanged Event");
+                
             }
         }
 
