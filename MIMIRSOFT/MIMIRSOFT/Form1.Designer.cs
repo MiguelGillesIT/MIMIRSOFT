@@ -199,14 +199,14 @@
             this.sToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.sToolStripMenuItem.Name = "sToolStripMenuItem";
             this.sToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
-            this.sToolStripMenuItem.Text = "30 sec";
+            this.sToolStripMenuItem.Text = "20 sec";
             // 
             // sToolStripMenuItem1
             // 
             this.sToolStripMenuItem1.CheckOnClick = true;
             this.sToolStripMenuItem1.Name = "sToolStripMenuItem1";
             this.sToolStripMenuItem1.Size = new System.Drawing.Size(106, 22);
-            this.sToolStripMenuItem1.Text = "45 sec";
+            this.sToolStripMenuItem1.Text = "30 sec";
             // 
             // sToolStripMenuItem2
             // 
@@ -500,6 +500,7 @@
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "   MIMIRSOFT";
             this.Load += new System.EventHandler(this.Form1_Load);

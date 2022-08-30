@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MIMIRSOFT
 {
-    internal class Device
+    public class Device
     {
         private string ipAddress;
         private string macAddress;

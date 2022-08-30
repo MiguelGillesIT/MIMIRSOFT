@@ -24,6 +24,8 @@ namespace MIMIRSOFT
         delegate void UpdateUnavailableDetectedDevice(String ipAdress);
         delegate void UpdateAvailableDetectedDevice(String ipAdress);
 
+        public static Device deviceDetails = new Device() ;
+
         public Form1()
         {
             InitializeComponent();
@@ -333,24 +335,16 @@ namespace MIMIRSOFT
         {
             if (listView1.SelectedItems.Count == 1)
             {
-                    System.Text.StringBuilder messageBoxCS = new System.Text.StringBuilder();
-                    messageBoxCS.AppendLine();
-                    messageBoxCS.AppendFormat("{0} = {1}", "IP ADDRESS", listView1.SelectedItems[0].SubItems[0].ToString());
-                    messageBoxCS.AppendLine();
-                    messageBoxCS.AppendFormat("{0} = {1}", "DEVICE NAME", listView1.SelectedItems[0].SubItems[1].ToString());
-                    messageBoxCS.AppendLine();
-                    messageBoxCS.AppendFormat("{0} = {1}", "MAC ADDRESS", listView1.SelectedItems[0].SubItems[2].ToString());
-                    messageBoxCS.AppendLine();
-                    messageBoxCS.AppendFormat("{0} = {1}", "INFO", listView1.SelectedItems[0].SubItems[3].ToString());
-                    messageBoxCS.AppendLine();
-                    messageBoxCS.AppendFormat("{0} = {1}", "CONSTRUCTOR", listView1.SelectedItems[0].SubItems[4].ToString());
-                    messageBoxCS.AppendLine();
-                    messageBoxCS.AppendFormat("{0} = {1}", "FIRST DETECTION", listView1.SelectedItems[0].SubItems[5].ToString());
-                    messageBoxCS.AppendLine();
-                    messageBoxCS.AppendFormat("{0} = {1}", "LAST DETECTION", listView1.SelectedItems[0].SubItems[6].ToString());
-                    messageBoxCS.AppendLine();
-                    MessageBox.Show(messageBoxCS.ToString(), "ItemSelectionChanged Event");
-                
+                deviceDetails.IpAddress = listView1.SelectedItems[0].SubItems[0].ToString().Substring(18).Trim('}');
+                deviceDetails.DomainName = listView1.SelectedItems[0].SubItems[2].ToString().Substring(18).Trim('}');
+                deviceDetails.MacAddress = listView1.SelectedItems[0].SubItems[1].ToString().Substring(18).Trim('}');
+                deviceDetails.Info = listView1.SelectedItems[0].SubItems[3].ToString().Substring(18).Trim('}');
+                deviceDetails.AdaptatorConstructor = listView1.SelectedItems[0].SubItems[4].ToString().Substring(18).Trim('}');
+                deviceDetails.FirstDetection = listView1.SelectedItems[0].SubItems[5].ToString().Substring(18).Trim('}');
+                deviceDetails.LastDetection = listView1.SelectedItems[0].SubItems[6].ToString().Substring(18).Trim('}');
+                deviceDetailForm detailForm = new deviceDetailForm();
+                detailForm.Show();
+
             }
         }
 
