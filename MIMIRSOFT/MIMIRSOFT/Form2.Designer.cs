@@ -119,6 +119,7 @@
             // 
             this.ipAdressTbx.Location = new System.Drawing.Point(198, 22);
             this.ipAdressTbx.Name = "ipAdressTbx";
+            this.ipAdressTbx.ReadOnly = true;
             this.ipAdressTbx.Size = new System.Drawing.Size(254, 23);
             this.ipAdressTbx.TabIndex = 7;
             // 
@@ -126,6 +127,7 @@
             // 
             this.macAddressTbx.Location = new System.Drawing.Point(198, 62);
             this.macAddressTbx.Name = "macAddressTbx";
+            this.macAddressTbx.ReadOnly = true;
             this.macAddressTbx.Size = new System.Drawing.Size(254, 23);
             this.macAddressTbx.TabIndex = 8;
             // 
@@ -133,6 +135,7 @@
             // 
             this.dvcNameTbx.Location = new System.Drawing.Point(198, 99);
             this.dvcNameTbx.Name = "dvcNameTbx";
+            this.dvcNameTbx.ReadOnly = true;
             this.dvcNameTbx.Size = new System.Drawing.Size(254, 23);
             this.dvcNameTbx.TabIndex = 9;
             // 
@@ -140,6 +143,7 @@
             // 
             this.dvcInfoTbx.Location = new System.Drawing.Point(198, 138);
             this.dvcInfoTbx.Name = "dvcInfoTbx";
+            this.dvcInfoTbx.ReadOnly = true;
             this.dvcInfoTbx.Size = new System.Drawing.Size(254, 23);
             this.dvcInfoTbx.TabIndex = 10;
             // 
@@ -147,6 +151,7 @@
             // 
             this.dvcConstructorTbx.Location = new System.Drawing.Point(198, 172);
             this.dvcConstructorTbx.Name = "dvcConstructorTbx";
+            this.dvcConstructorTbx.ReadOnly = true;
             this.dvcConstructorTbx.Size = new System.Drawing.Size(254, 23);
             this.dvcConstructorTbx.TabIndex = 11;
             // 
@@ -154,6 +159,7 @@
             // 
             this.fDetectionTbx.Location = new System.Drawing.Point(198, 211);
             this.fDetectionTbx.Name = "fDetectionTbx";
+            this.fDetectionTbx.ReadOnly = true;
             this.fDetectionTbx.Size = new System.Drawing.Size(254, 23);
             this.fDetectionTbx.TabIndex = 12;
             // 
@@ -161,6 +167,7 @@
             // 
             this.lDetectionTbx.Location = new System.Drawing.Point(198, 249);
             this.lDetectionTbx.Name = "lDetectionTbx";
+            this.lDetectionTbx.ReadOnly = true;
             this.lDetectionTbx.Size = new System.Drawing.Size(254, 23);
             this.lDetectionTbx.TabIndex = 13;
             // 

@@ -309,6 +309,7 @@
             this.searchBtn.Name = "searchBtn";
             this.searchBtn.Size = new System.Drawing.Size(23, 22);
             this.searchBtn.Text = "Filtrer";
+            this.searchBtn.Click += new System.EventHandler(this.searchBtn_Click);
             // 
             // resetBtn
             // 
@@ -544,7 +545,7 @@
         private ToolStripMenuItem aideToolStripMenuItem;
         private ToolStripMenuItem àProposToolStripMenuItem;
         private ToolStripMenuItem NetAdaptToolStripMenuItem;
-        private ListView listView1;
+        public ListView listView1;
         private ColumnHeader deviceName;
         private ColumnHeader ipAddress;
         private ColumnHeader macAddress;

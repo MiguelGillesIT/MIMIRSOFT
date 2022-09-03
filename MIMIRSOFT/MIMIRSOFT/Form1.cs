@@ -17,8 +17,8 @@ namespace MIMIRSOFT
         private Device currentDevice = new Device();
         private string currentDeviceDefaultGatewayIPAddress;
         
-        private List<String> detectedHost = new List<String>();
-        private List<String> availabledetectedHost = new List<String>();
+        public List<Device> detectedDevices = new List<Device>();
+        
 
         delegate void UpdateNetworkListViewDelegate(String ipAdress);
         delegate void UpdateUnavailableDetectedDevice(String ipAdress);
@@ -90,7 +90,7 @@ namespace MIMIRSOFT
         {
             if (selectedAdaptaterName != e.ClickedItem.ToString())
             {
-                detectedHost.Clear();
+                detectedDevices.Clear();
                 ClearNetworkListView();
                 backgroundWorker1.CancelAsync();
                 selectedAdaptaterName = e.ClickedItem.ToString();
@@ -124,7 +124,7 @@ namespace MIMIRSOFT
             }
             else if (selectedAdaptaterName == e.ClickedItem.ToString())
             {
-                detectedHost.Clear();
+                detectedDevices.Clear();
                 ClearNetworkListView();
                 selectedAdaptaterName = "";
                 currentDevice = new Device();
@@ -174,7 +174,7 @@ namespace MIMIRSOFT
                 }
                 else
                 {
-                    MessageBox.Show("Aucune carte réseau sélectionnée.", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Error);  
+                    MessageBox.Show("Aucune carte réseau sélectionnée.", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Error,MessageBoxDefaultButton.Button1,MessageBoxOptions.DefaultDesktopOnly);
                 }
             } 
         }
@@ -220,9 +220,9 @@ namespace MIMIRSOFT
             string ipAdress = (string)e.Reply.Address.ToString();
             if (e.Reply != null && e.Reply.Status == IPStatus.Success)
             {
-                
                 UpdateNetworkListView(ipAdress);
             }
+            
         }
 
         void UpdateNetworkListView(string ipAdress)
@@ -231,8 +231,9 @@ namespace MIMIRSOFT
             {
                 this.Invoke(new UpdateNetworkListViewDelegate(UpdateNetworkListView), ipAdress);
                 return;
+                
             }
-            detectedHost.Add(ipAdress);
+            
             if (ipAdress != currentDevice.IpAddress)
             {
                 string macAddress = NetworkAnalysisUtility.getMacAddress(ipAdress).ToUpper();
@@ -241,14 +242,18 @@ namespace MIMIRSOFT
                 {
                     onlineDevice.Info = "Votre routeur";
                 }
+                detectedDevices.Add(onlineDevice);
                 this.listView1.Items.Add(new ListViewItem(new String[] { onlineDevice.IpAddress, onlineDevice.DomainName, onlineDevice.MacAddress, onlineDevice.Info, onlineDevice.AdaptatorConstructor, onlineDevice.FirstDetection, onlineDevice.LastDetection }));
-                
+                this.listView1.Items[detectedDevices.IndexOf(onlineDevice)].ImageIndex = 1;
             }
             else
             {
-                this.listView1.Items.Add(new ListViewItem(new String[] { currentDevice.IpAddress, currentDevice.DomainName, currentDevice.MacAddress, currentDevice.Info, currentDevice.AdaptatorConstructor, currentDevice.FirstDetection, currentDevice.LastDetection })); 
+                detectedDevices.Add(currentDevice);
+                this.listView1.Items.Add(new ListViewItem(new String[] { currentDevice.IpAddress, currentDevice.DomainName, currentDevice.MacAddress, currentDevice.Info, currentDevice.AdaptatorConstructor, currentDevice.FirstDetection, currentDevice.LastDetection }));
+                this.listView1.Items[detectedDevices.IndexOf(currentDevice)].ImageIndex = 1;
             }
-            this.listView1.Items[detectedHost.IndexOf(ipAdress)].ImageIndex = 1;
+            
+            
         }
 
         void UpdateUnavailableDevice(String ipAdress)
@@ -258,8 +263,9 @@ namespace MIMIRSOFT
                 this.Invoke(new UpdateUnavailableDetectedDevice(UpdateUnavailableDevice), ipAdress);
                 return;
             }
-            this.listView1.Items[detectedHost.IndexOf(ipAdress)].ImageIndex = 0;
-            this.listView1.Items[detectedHost.IndexOf(ipAdress)].SubItems[6].Text = DateTime.Now.ToString();
+            Device foundDevice = detectedDevices.Find(device => device.IpAddress == ipAdress);
+            this.listView1.Items[detectedDevices.IndexOf(foundDevice)].ImageIndex = 0;
+            this.listView1.Items[detectedDevices.IndexOf(foundDevice)].SubItems[6].Text = DateTime.Now.ToString();
             
         }
 
@@ -270,8 +276,9 @@ namespace MIMIRSOFT
                 this.Invoke(new UpdateAvailableDetectedDevice(UpdateAvailableDevice), ipAdress);
                 return;
             }
-            this.listView1.Items[detectedHost.IndexOf(ipAdress)].ImageIndex = 1;
-            this.listView1.Items[detectedHost.IndexOf(ipAdress)].SubItems[6].Text = DateTime.Now.ToString();
+            Device foundDevice = detectedDevices.Find(device => device.IpAddress == ipAdress);
+            this.listView1.Items[detectedDevices.IndexOf(foundDevice)].ImageIndex = 1;
+            this.listView1.Items[detectedDevices.IndexOf(foundDevice)].SubItems[6].Text = DateTime.Now.ToString();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -301,7 +308,7 @@ namespace MIMIRSOFT
                 {
                     // Perform a time consuming operation and report progress.
                     string ipAddress = NetworkAnalysisUtility.generateIpAddress(currentDeviceNetworkIPAddress, i);
-                    if (detectedHost.Contains(ipAddress))
+                    if (detectedDevices.Exists(device => device.IpAddress == ipAddress))
                     {
                         Ping pingSender = new Ping();
                         PingReply reply = pingSender.Send(ipAddress, 200);
@@ -327,7 +334,7 @@ namespace MIMIRSOFT
                     e.Cancel = true;
                     break;
                 }
-                //Thread.Sleep(20);
+             
             }  
         }
 
@@ -473,14 +480,20 @@ namespace MIMIRSOFT
 
         private void resetBtn_Click(object sender, EventArgs e)
         {
-            detectedHost.Clear();
+            detectedDevices.Clear();
             ClearNetworkListView();
         }
 
         private void deleteBtn_Click(object sender, EventArgs e)
         {
-            detectedHost.RemoveAt(listView1.SelectedItems[0].Index);
+            detectedDevices.RemoveAt(listView1.SelectedItems[0].Index);
             listView1.SelectedItems[0].Remove();
         }
-    }
+
+        private void searchBtn_Click(object sender, EventArgs e)
+        {
+            deviceSearchForm deviceSearchFm = new deviceSearchForm(this);
+            deviceSearchFm.Show();
+        }
+    } 
 }
