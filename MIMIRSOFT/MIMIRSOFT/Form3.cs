@@ -64,7 +64,12 @@ namespace MIMIRSOFT
 
                 }
             }
-            
+            else
+            {
+                MessageBox.Show("Aucun périphérique disponible.", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                this.Close();
+            }
+
         }
  
     }

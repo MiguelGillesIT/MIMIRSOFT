@@ -18,7 +18,6 @@ namespace MIMIRSOFT
         private string currentDeviceDefaultGatewayIPAddress;
         
         public List<Device> detectedDevices = new List<Device>();
-        
 
         delegate void UpdateNetworkListViewDelegate(String ipAdress);
         delegate void UpdateUnavailableDetectedDevice(String ipAdress);
@@ -40,6 +39,35 @@ namespace MIMIRSOFT
             
             timer1.Interval = Int32.Parse(sToolStripMenuItem.Text.Substring(0,2)) * 1000;
 
+        }
+
+        void NetworkAnalysis()
+        {
+            int addressNumber = NetworkAnalysisUtility.getNumberOfAvailableAddresses(currentDeviceWildCardMask);
+            for (int i = 1; i < addressNumber; i++)
+            {
+                // Perform a time consuming operation and report progress.
+                string ipAddress = NetworkAnalysisUtility.generateIpAddress(currentDeviceNetworkIPAddress, i);
+                if (detectedDevices.Exists(device => device.IpAddress == ipAddress))
+                {
+                    Ping pingSender = new Ping();
+                    PingReply reply = pingSender.Send(ipAddress, 200);
+                    if (reply.Status == IPStatus.Success)
+                    {
+                        UpdateAvailableDevice(ipAddress);
+                    }
+                    else
+                    {
+                        UpdateUnavailableDevice(ipAddress);
+                    }
+                }
+                else
+                {
+                    Ping pingSender = new Ping();
+                    pingSender.PingCompleted += new PingCompletedEventHandler(completedPing);
+                    pingSender.SendAsync(ipAddress, 200);
+                }
+            }
         }
 
         public void MakeNetWorkAdaptaterToolStripCheckable()

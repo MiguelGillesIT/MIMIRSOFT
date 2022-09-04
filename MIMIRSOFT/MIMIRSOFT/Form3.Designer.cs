@@ -88,9 +88,9 @@
             this.caseSensCbx.AutoSize = true;
             this.caseSensCbx.Location = new System.Drawing.Point(178, 84);
             this.caseSensCbx.Name = "caseSensCbx";
-            this.caseSensCbx.Size = new System.Drawing.Size(121, 19);
+            this.caseSensCbx.Size = new System.Drawing.Size(120, 19);
             this.caseSensCbx.TabIndex = 5;
-            this.caseSensCbx.Text = "Sensible à la casse";
+            this.caseSensCbx.Text = "Respecter la casse";
             this.caseSensCbx.UseVisualStyleBackColor = true;
             // 
             // deviceSearchForm
