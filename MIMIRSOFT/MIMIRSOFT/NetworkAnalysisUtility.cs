@@ -85,6 +85,20 @@ namespace MIMIRSOFT
            
         }
 
+        public static string findNicConstructorforPcap(string macAddress)
+        {
+
+            string macPrefix = macAddress.Substring(0, 6);
+            foreach (string line in File.ReadLines(@"D:\PROJETS\NETWORKTEST\macAdaptaterConstructor.txt"))
+            {
+                if (line.Contains(macPrefix) & line.Contains("(base 16)"))
+                {
+                    return line.Substring(22);
+                }
+            }
+            return macAddress.Substring(0, 6);
+        }
+
         public static string getDnsNameOfIpAddress(string IpAddress)
         {
             try

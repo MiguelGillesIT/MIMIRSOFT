@@ -76,6 +76,18 @@
             this.remotePort = new System.Windows.Forms.ColumnHeader();
             this.remoteAddress = new System.Windows.Forms.ColumnHeader();
             this.state = new System.Windows.Forms.ColumnHeader();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.listView3 = new System.Windows.Forms.ListView();
+            this.index = new System.Windows.Forms.ColumnHeader();
+            this.sourceIpAddr = new System.Windows.Forms.ColumnHeader();
+            this.remoteIpAddr = new System.Windows.Forms.ColumnHeader();
+            this.sourceMacAddr = new System.Windows.Forms.ColumnHeader();
+            this.remoteMacAddr = new System.Windows.Forms.ColumnHeader();
+            this.sourcePort = new System.Windows.Forms.ColumnHeader();
+            this.remotePport = new System.Windows.Forms.ColumnHeader();
+            this.Pprotocol = new System.Windows.Forms.ColumnHeader();
+            this.length = new System.Windows.Forms.ColumnHeader();
+            this.ArrivalTime = new System.Windows.Forms.ColumnHeader();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
@@ -84,6 +96,7 @@
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -287,7 +300,7 @@
             this.detailBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.detailBtn.Name = "detailBtn";
             this.detailBtn.Size = new System.Drawing.Size(23, 22);
-            this.detailBtn.Text = "Détails de l\'élément";
+            this.detailBtn.Text = "Copier";
             this.detailBtn.Click += new System.EventHandler(this.detailBtn_Click);
             // 
             // deleteBtn
@@ -325,6 +338,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(0, 139);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -369,7 +383,7 @@
             // ipAddress
             // 
             this.ipAddress.Text = "Adresse IP";
-            this.ipAddress.Width = 150;
+            this.ipAddress.Width = 100;
             // 
             // deviceName
             // 
@@ -389,7 +403,7 @@
             // adaptateurProvider
             // 
             this.adaptateurProvider.Text = "Fournisseur ";
-            this.adaptateurProvider.Width = 150;
+            this.adaptateurProvider.Width = 190;
             // 
             // firstDetection
             // 
@@ -480,6 +494,91 @@
             this.state.Text = "Etat";
             this.state.Width = 100;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.listView3);
+            this.tabPage3.Location = new System.Drawing.Point(4, 24);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(1055, 395);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Paquets";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // listView3
+            // 
+            this.listView3.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.index,
+            this.sourceIpAddr,
+            this.remoteIpAddr,
+            this.sourceMacAddr,
+            this.remoteMacAddr,
+            this.sourcePort,
+            this.remotePport,
+            this.Pprotocol,
+            this.length,
+            this.ArrivalTime});
+            this.listView3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView3.FullRowSelect = true;
+            this.listView3.Location = new System.Drawing.Point(3, 3);
+            this.listView3.Name = "listView3";
+            this.listView3.Size = new System.Drawing.Size(1049, 389);
+            this.listView3.TabIndex = 0;
+            this.listView3.UseCompatibleStateImageBehavior = false;
+            this.listView3.View = System.Windows.Forms.View.Details;
+            this.listView3.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView3_ColumnClick);
+            this.listView3.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listView3_ItemSelectionChanged);
+            // 
+            // index
+            // 
+            this.index.Text = "Index";
+            this.index.Width = 50;
+            // 
+            // sourceIpAddr
+            // 
+            this.sourceIpAddr.Text = "Adresse IP Source";
+            this.sourceIpAddr.Width = 110;
+            // 
+            // remoteIpAddr
+            // 
+            this.remoteIpAddr.Text = "Adresse IP distante";
+            this.remoteIpAddr.Width = 130;
+            // 
+            // sourceMacAddr
+            // 
+            this.sourceMacAddr.Text = "Adresse MAC Source";
+            this.sourceMacAddr.Width = 140;
+            // 
+            // remoteMacAddr
+            // 
+            this.remoteMacAddr.Text = "Adresse MAC distante";
+            this.remoteMacAddr.Width = 140;
+            // 
+            // sourcePort
+            // 
+            this.sourcePort.Text = "Port Source";
+            this.sourcePort.Width = 80;
+            // 
+            // remotePport
+            // 
+            this.remotePport.Text = "Port distant";
+            this.remotePport.Width = 80;
+            // 
+            // Pprotocol
+            // 
+            this.Pprotocol.Text = "Protocole";
+            this.Pprotocol.Width = 90;
+            // 
+            // length
+            // 
+            this.length.Text = "Taille";
+            this.length.Width = 70;
+            // 
+            // ArrivalTime
+            // 
+            this.ArrivalTime.Text = "Temps d\'arrivée";
+            this.ArrivalTime.Width = 140;
+            // 
             // timer1
             // 
             this.timer1.Enabled = true;
@@ -512,6 +611,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -568,5 +668,17 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker2;
         private ToolStripButton resetBtn;
         private ToolStripButton deleteBtn;
+        private TabPage tabPage3;
+        private ListView listView3;
+        private ColumnHeader index;
+        private ColumnHeader sourceIpAddr;
+        private ColumnHeader remoteIpAddr;
+        private ColumnHeader sourceMacAddr;
+        private ColumnHeader remoteMacAddr;
+        private ColumnHeader sourcePort;
+        private ColumnHeader remotePport;
+        private ColumnHeader Pprotocol;
+        private ColumnHeader length;
+        private ColumnHeader ArrivalTime;
     }
 }
