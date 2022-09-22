@@ -926,41 +926,92 @@ namespace MIMIRSOFT
 
         private void saveElementsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count > 1)
+            if (tabControl1.SelectedIndex == 0)
             {
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-
-                saveFileDialog.Filter = "txt files (*.txt)|*.txt";
-                saveFileDialog.FilterIndex = 2;
-                saveFileDialog.DefaultExt = "txt";
-                saveFileDialog.RestoreDirectory = true;
-                saveFileDialog.Title = "Sauvegarder un périphérique";
-                saveFileDialog.InitialDirectory = "c:\\";
-
-                String saveInfo = "+-----+-----------------+--------------------+-------------------------------+---------------------+----------------------------------+---------------------+---------------------+ \n";
-                saveInfo += "|     |                 |                    |                               |                     |                                  |                     |                     | \n";
-                saveInfo += "|  N° |   Adresse IP    |     Adresse MAC    |         Périphérique          |     Information     |           Constructeur           |  Premiere Détection |  Dernière Détection | \n";
-                saveInfo += "|     |                 |                    |                               |                     |                                  |                     |                     | \n";
-                saveInfo += "+-----+-----------------+--------------------+-------------------------------+---------------------+----------------------------------+---------------------+---------------------+ \n";
-                
-                for (int i = 0; i < listView1.SelectedItems.Count; i++)
+                if (listView1.SelectedItems.Count > 1)
                 {
-                    String ipAddress = listView1.SelectedItems[i].SubItems[0].ToString().Substring(18).Trim('}');
-                    String macAdress = listView1.SelectedItems[i].SubItems[2].ToString().Substring(18).Trim('}');
-                    String deviceName = listView1.SelectedItems[i].SubItems[1].ToString().Substring(18).Trim('}');
-                    String deviceInfo = listView1.SelectedItems[i].SubItems[3].ToString().Substring(18).Trim('}');
-                    String deviceConstructor = listView1.SelectedItems[i].SubItems[4].ToString().Substring(18).Trim('}');
-                    String firstDetection = listView1.SelectedItems[i].SubItems[5].ToString().Substring(18).Trim('}');
-                    String lastDetection = listView1.SelectedItems[i].SubItems[6].ToString().Substring(18).Trim('}');
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
 
-                    saveInfo += "|" + PadCenter((i + 1).ToString(),5) + "|" + PadCenter(ipAddress,17) + "|" + PadCenter(macAdress,20) + "|" + PadCenter(deviceName,31) + "|" + PadCenter(deviceInfo,21) + "|" + PadCenter(deviceConstructor,34) + "|" + PadCenter(firstDetection,21) + "|" + PadCenter(lastDetection,21) + "| \n";
-                    saveInfo += "+-----+-----------------+--------------------+-------------------------------+---------------------+----------------------------------+---------------------+---------------------+ \n";
-                }
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    File.WriteAllText(saveFileDialog.FileName, saveInfo);
+                    saveFileDialog.Filter = "txt files (*.txt)|*.txt";
+                    saveFileDialog.FilterIndex = 2;
+                    saveFileDialog.DefaultExt = "txt";
+                    saveFileDialog.RestoreDirectory = true;
+                    saveFileDialog.Title = "Sauvegarder un périphérique";
+                    saveFileDialog.InitialDirectory = "c:\\";
+
+                    String saveDeviceInfo = "+-----+-----------------+--------------------+-------------------------------+---------------------+----------------------------------+---------------------+---------------------+ \n";
+                    saveDeviceInfo += "|     |                 |                    |                               |                     |                                  |                     |                     | \n";
+                    saveDeviceInfo += "|  N° |   Adresse IP    |     Adresse MAC    |         Périphérique          |     Information     |           Constructeur           |  Premiere Détection |  Dernière Détection | \n";
+                    saveDeviceInfo += "|     |                 |                    |                               |                     |                                  |                     |                     | \n";
+                    saveDeviceInfo += "+-----+-----------------+--------------------+-------------------------------+---------------------+----------------------------------+---------------------+---------------------+ \n";
+
+                    for (int i = 0; i < listView1.SelectedItems.Count; i++)
+                    {
+                        String ipAddress = listView1.SelectedItems[i].SubItems[0].ToString().Substring(18).Trim('}');
+                        String macAdress = listView1.SelectedItems[i].SubItems[2].ToString().Substring(18).Trim('}');
+                        String deviceName = listView1.SelectedItems[i].SubItems[1].ToString().Substring(18).Trim('}');
+                        String deviceInfo = listView1.SelectedItems[i].SubItems[3].ToString().Substring(18).Trim('}');
+                        String deviceConstructor = listView1.SelectedItems[i].SubItems[4].ToString().Substring(18).Trim('}');
+                        String firstDetection = listView1.SelectedItems[i].SubItems[5].ToString().Substring(18).Trim('}');
+                        String lastDetection = listView1.SelectedItems[i].SubItems[6].ToString().Substring(18).Trim('}');
+
+                        saveDeviceInfo += "|" + PadCenter((i + 1).ToString(), 5) + "|" + PadCenter(ipAddress, 17) + "|" + PadCenter(macAdress, 20) + "|" + PadCenter(deviceName, 31) + "|" + PadCenter(deviceInfo, 21) + "|" + PadCenter(deviceConstructor, 34) + "|" + PadCenter(firstDetection, 21) + "|" + PadCenter(lastDetection, 21) + "| \n";
+                        saveDeviceInfo += "+-----+-----------------+--------------------+-------------------------------+---------------------+----------------------------------+---------------------+---------------------+ \n";
+                    }
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        File.WriteAllText(saveFileDialog.FileName, saveDeviceInfo);
+                    }
                 }
             }
+            else if (tabControl1.SelectedIndex == 1)
+            {
+
+            }
+            else if (tabControl1.SelectedIndex == 2)
+            {
+                if (listView3.SelectedItems.Count > 1)
+                {
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "txt files (*.txt)|*.txt";
+                    saveFileDialog.FilterIndex = 2;
+                    saveFileDialog.DefaultExt = "txt";
+                    saveFileDialog.RestoreDirectory = true;
+                    saveFileDialog.Title = "Sauvegarder un packet";
+                    saveFileDialog.InitialDirectory = "c:\\";
+
+                    String savePacketInfo = "+-----+-------------------+------------------------+--------------------+-------------------------+-------------+--------------+-----------+--------+-----------------------+\n";
+                    savePacketInfo += "|     |                   |                        |                    |                         |             |              |           |        |                       | \n";
+                    savePacketInfo += "|  N° | Adresse IP Source | Adresse IP Destination | Adresse MAC Source | Adresse MAC Destination | Port Source | Port Distant | Protocole | Taille |    Temps d'arrivée    | \n";
+                    savePacketInfo += "|     |                   |                        |                    |                         |             |              |           |        |                       | \n";
+                    savePacketInfo += "+-----+-------------------+------------------------+--------------------+-------------------------+-------------+--------------+-----------+--------+-----------------------+ \n";
+
+
+                    for (int i = 0; i < listView3.SelectedItems.Count; i++)
+                    {
+                        String index = listView3.SelectedItems[i].SubItems[0].ToString().Substring(18).Trim('}');
+                        String ipAddressSrc = listView3.SelectedItems[i].SubItems[1].ToString().Substring(18).Trim('}');
+                        String ipAddressDst = listView3.SelectedItems[i].SubItems[2].ToString().Substring(18).Trim('}');
+                        String macAddressSrc = listView3.SelectedItems[i].SubItems[3].ToString().Substring(18).Trim('}');
+                        String macAddresDst = listView3.SelectedItems[i].SubItems[4].ToString().Substring(18).Trim('}');
+                        String portSrc = listView3.SelectedItems[i].SubItems[5].ToString().Substring(18).Trim('}');
+                        String portDst = listView3.SelectedItems[i].SubItems[6].ToString().Substring(18).Trim('}');
+                        String protocol = listView3.SelectedItems[i].SubItems[7].ToString().Substring(18).Trim('}');
+                        String length = listView3.SelectedItems[i].SubItems[8].ToString().Substring(18).Trim('}');
+                        String ArrivalTime = listView3.SelectedItems[i].SubItems[9].ToString().Substring(18).Trim('}');
+
+                        savePacketInfo += "|" + PadCenter(index, 5) + "|" + PadCenter(ipAddressSrc, 19) + "|" + PadCenter(ipAddressDst, 24) + "|" + PadCenter(macAddressSrc,20) + "|" + PadCenter(macAddresDst, 25) + "|" + PadCenter(portSrc, 13) + "|" + PadCenter(portDst, 14) + "|" + PadCenter(protocol, 11) + "|" + PadCenter(length, 8) + "|" + PadCenter(ArrivalTime, 23) + "|" + "\n";
+                        savePacketInfo += "+-----+-------------------+------------------------+--------------------+-------------------------+-------------+--------------+-----------+--------+-----------------------+ \n";
+                    }
+
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        File.WriteAllText(saveFileDialog.FileName, savePacketInfo);
+                    }
+                }
+                
+            }
+                
 
         }
 

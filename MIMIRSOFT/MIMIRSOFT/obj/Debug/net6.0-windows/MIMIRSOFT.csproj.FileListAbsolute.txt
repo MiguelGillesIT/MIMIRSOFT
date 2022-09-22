@@ -40,3 +40,4 @@ D:\PROJETS\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.devi
 D:\PROJETS\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\bin\Debug\net6.0-windows\PacketDotNet.dll
 D:\PROJETS\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\bin\Debug\net6.0-windows\SharpPcap.dll
 D:\PROJETS\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.csproj.CopyComplete
+D:\PROJETS\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.packetSearchForm.resources

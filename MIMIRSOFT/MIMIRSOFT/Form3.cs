@@ -71,6 +71,10 @@ namespace MIMIRSOFT
             }
 
         }
- 
+
+        private void deviceSearchForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

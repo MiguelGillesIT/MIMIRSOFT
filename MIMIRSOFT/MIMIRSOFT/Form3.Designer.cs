@@ -109,6 +109,7 @@
             this.MinimizeBox = false;
             this.Name = "deviceSearchForm";
             this.Text = "Recherhe de périphériques";
+            this.Load += new System.EventHandler(this.deviceSearchForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
