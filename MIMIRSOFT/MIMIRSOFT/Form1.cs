@@ -2,7 +2,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.ComponentModel;
 using SharpPcap;
-using System.Net;
+using System.Reflection;
 
 namespace MIMIRSOFT
 {
@@ -45,7 +45,10 @@ namespace MIMIRSOFT
             //Load available network adaptater's into "Carte reseau" tool strip and make them available
             AddNetworkAndPacketCaptureAdaptater();
             MakeNetWorkAdaptaterToolStripCheckable();
-            
+            SetDoubleBuffer(listView1,true);
+            SetDoubleBuffer(listView2,true);
+            SetDoubleBuffer(listView3,true);
+
             timer1.Interval = Int32.Parse(sToolStripMenuItem.Text.Substring(0,2)) * 1000;
 
         }
@@ -113,6 +116,16 @@ namespace MIMIRSOFT
             }
         }
 
+        static void SetDoubleBuffer(Control ctl, bool DoubleBuffered)
+        {
+            try
+            {
+                typeof(Control).InvokeMember("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty, null, ctl, new object[] { DoubleBuffered });
+            }catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
         private void NetAdaptToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             
@@ -554,7 +567,7 @@ namespace MIMIRSOFT
                 }
 
                 this.listView3.Items.Add(new ListViewItem(new String[] { packetIndex.ToString(), srcIPAddr, dstIPAddr, srcMacAddr, dstMacAddr, srcPort, dstPort, protocol, frameLength, packetTime }));
-
+                this.listView3.EnsureVisible(this.listView3.Items.Count - 1);
             }
         }
         private void timer1_Tick(object sender, EventArgs e)
