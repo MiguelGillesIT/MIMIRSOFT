@@ -355,6 +355,7 @@ namespace MIMIRSOFT
             this.listView1.Items[detectedDevices.IndexOf(foundDevice)].SubItems[6].Text = DateTime.Now.ToString();
         }
 
+
         void addNewPacketToList(RawCapture rawPacket, DateTime time)
         {
             if (InvokeRequired)
@@ -367,11 +368,11 @@ namespace MIMIRSOFT
             string packetTime = "";
             string frameType = "";
             string frameLength = "";
-            string srcMacAddr = "";
-            string dstMacAddr = "";
             string ethernetPacketType = "";
             string srcIPAddr = "";
             string dstIPAddr = "";
+            string srcMacAddr = "";
+            string dstMacAddr = "";
             string srcPort = "";
             string dstPort = "";
             string protocol = "";
@@ -382,7 +383,7 @@ namespace MIMIRSOFT
                 frameLength = frame.TotalPacketLength.ToString();
                 frameType = rawPacket.LinkLayerType.ToString();
                 protocol = frameType;
-                /*switch (time.Month)
+                switch (time.Month)
                 {
                     case 1:
                         packetTime = time.Day + " Janvier " + time.Year + ", " + time.Hour + ":" + time.Minute + ":" + time.Second + ":" + time.Millisecond;
@@ -420,264 +421,142 @@ namespace MIMIRSOFT
                     case 12:
                         packetTime = time.Day + " Décembre " + time.Year + ", " + time.Hour + ":" + time.Minute + ":" + time.Second + ":" + time.Millisecond;
                         break;
-                }*/
-                packetTime = time.Day+ "/"+ time.Month + "/" + time.Year + " " + time.Hour + ":" + time.Minute + ":" + time.Second + ":" + time.Millisecond;
+                }
+
 
                 var ethernetPacket = frame.Extract<PacketDotNet.EthernetPacket>();
                 if (ethernetPacket != null)
                 {
 
                     srcMacAddr = ethernetPacket.DestinationHardwareAddress.ToString();
-                    //srcMacConstructor = NetworkAnalysisUtility.findNicConstructorforPcap(srcMacAddr);
+                    string srcMacConstructor = NetworkAnalysisUtility.findNicConstructorforPcap(srcMacAddr);
                     dstMacAddr = ethernetPacket.SourceHardwareAddress.ToString();
-                    //dstMacConstructor = NetworkAnalysisUtility.findNicConstructorforPcap(dstMacAddr);
+                    string dstMacConstructor = NetworkAnalysisUtility.findNicConstructorforPcap(dstMacAddr);
                     ethernetPacketType = ethernetPacket.Type.ToString();
-
-                    if (ethernetPacketType == "Arp")
-                    {
-                        var arpPacket = ethernetPacket.Extract<PacketDotNet.ArpPacket>();
-                        if (arpPacket != null)
-                        {
-                            /*string senderMacAddr = arpPacket.SenderHardwareAddress.ToString();
-                            string senderIPAddress = arpPacket.SenderProtocolAddress.ToString();
-                            string targetMacAddr = arpPacket.TargetHardwareAddress.ToString();
-                            string targetIPAddress = arpPacket.TargetProtocolAddress.ToString();
-                            string operation = arpPacket.Operation.ToString();
-                            string protocolType = arpPacket.ProtocolAddressType.ToString();
-                            string hardWareType = arpPacket.HardwareAddressType.ToString();
-                            int hardwareSize = arpPacket.HardwareAddressLength;
-                            int protocolSize = arpPacket.ProtocolAddressLength;
-
-                            Console.WriteLine("3. ARP (Address Resolution Protocol)");
-                            Console.WriteLine("HardWare Type : " + hardWareType);
-                            Console.WriteLine("Protocol Type : "+ protocolType);
-                            Console.WriteLine("Hardware Size : "+ hardwareSize);
-                            Console.WriteLine("Protocol Size : "+ protocolSize);
-                            Console.WriteLine("Operation : " + operation);
-                            Console.WriteLine("Sender Mac Address : {0}_{1}", NetworkAnalysisUtility.findNicConstructorforPcap(senderMacAddr), senderMacAddr.Substring(6, 6));
-                            Console.WriteLine("Sender IP Address : " + senderIPAddress);
-
-                            if(targetMacAddr != "000000000000")
-                            {
-                                Console.WriteLine("Target Mac Address : {0}_{1}", NetworkAnalysisUtility.findNicConstructorforPcap(targetMacAddr), targetMacAddr.Substring(6, 6));
-                            }
-                            else
-                            {
-                                Console.WriteLine("Target Mac Address : {0}", targetMacAddr);
-                            }
-                            Console.WriteLine("Target IP Address : " + targetIPAddress);*/
-
-                            srcIPAddr = arpPacket.SenderProtocolAddress.ToString();
-                            dstIPAddr = arpPacket.TargetProtocolAddress.ToString();
-                            srcMacAddr = arpPacket.SenderHardwareAddress.ToString();
-                            dstMacAddr = arpPacket.TargetHardwareAddress.ToString();
-                            protocol = "ARP";
-
-                        }
-                    }
-                    else if (ethernetPacketType == "IPv4")
-                    {
-
-                        var ipv4Packet = ethernetPacket.Extract<PacketDotNet.IPPacket>();
-                        if (ipv4Packet != null)
-                        {
-
-                            srcIPAddr = ipv4Packet.SourceAddress.ToString();
-                            dstIPAddr = ipv4Packet.DestinationAddress.ToString();
-                            protocol = "IPV4";
-                            /*string version = ipv4Packet.Version.ToString();
-                            int headerLength = ipv4Packet.HeaderLength;
-                            int totalLength = ipv4Packet.TotalLength;*/
-
-                            /*string ttl = ipv4Packet.TimeToLive.ToString();
-                            string hop = ipv4Packet.HopLimit.ToString();
-                            string nextProtocol = ipv4Packet.Protocol.ToString();*/
-                            /*Console.WriteLine("4. Internet Protocol Version 4");
-                            Console.WriteLine("Version : " + version);
-                            Console.WriteLine("Header Length : " + headerLength);
-                            Console.WriteLine("Total Length : " + totalLength);
-                            Console.WriteLine("Protocol : " + nextProtocol);
-                            Console.WriteLine("TTL : " + ttl);
-                            Console.WriteLine("Hop limit : " + hop);
-                            Console.WriteLine("Source Address : " + srcIp);
-                            Console.WriteLine("Destination Address : " + dstIp);*/
-
-                        }
-                        var icmpPacket = ethernetPacket.Extract<PacketDotNet.IcmpV4Packet>();
-                        if (icmpPacket != null)
-                        {
-                            string operation = icmpPacket.TypeCode.ToString();
-                            string chekcsum = icmpPacket.Checksum.ToString();
-                            bool validChecksum = icmpPacket.ValidIcmpChecksum;
-                            string Id = icmpPacket.Id.ToString();
-                            string sequence = icmpPacket.Sequence.ToString();
-                            protocol = "ICMPV4";
-                        }
-
-                        var tcpPacket = ethernetPacket.Extract<PacketDotNet.TcpPacket>();
-                        if (tcpPacket != null)
-                        {
-                            srcPort = tcpPacket.SourcePort.ToString();
-                            dstPort = tcpPacket.DestinationPort.ToString();
-                            /*string checksum = tcpPacket.Checksum.ToString();
-                            string checksumValid = tcpPacket.ValidChecksum.ToString();
-                            bool isAckPacket = tcpPacket.Acknowledgment;
-                            bool isRstPacket = tcpPacket.Reset;
-                            string ackNmber = tcpPacket.AcknowledgmentNumber.ToString();
-                            bool isCongestionWindowsReduced = tcpPacket.CongestionWindowReduced;
-                            bool isFinishedPacket = tcpPacket.Finished;
-                            bool isPushPacket = tcpPacket.Push;
-                            string sequenceNumber = tcpPacket.SequenceNumber.ToString();
-                            bool isSynchronize = tcpPacket.Synchronize;
-                            bool isUrgent = tcpPacket.Urgent;
-                            bool isNonce = tcpPacket.NonceSum;
-                            bool isECN_Echo = tcpPacket.ExplicitCongestionNotificationEcho;
-                            int length = tcpPacket.TotalPacketLength;
-                            string tcpWindows = tcpPacket.WindowSize.ToString();*/
-
-                            /*Console.WriteLine("Source Port : " + srcPort);
-                            Console.WriteLine("Destination Port : " + dstPort);
-                            Console.WriteLine("Sequence Number : " + sequenceNumber);
-                            Console.WriteLine("Length : " + length);
-                            Console.WriteLine("Ack number : " + ackNmber);
-                            Console.WriteLine("isAckPacket : " + isAckPacket);
-                            Console.WriteLine("isRstPacket" + isRstPacket);
-                            Console.WriteLine("isCongestionWindowsReduced" + isCongestionWindowsReduced);
-                            Console.WriteLine("isFinishedPacket" + isFinishedPacket);
-                            Console.WriteLine("isPushPacket" + isPushPacket);
-                            Console.WriteLine("isSynchronize" + isSynchronize);
-                            Console.WriteLine("isUrgent" + isUrgent);
-                            Console.WriteLine("isNonce" + isNonce);
-                            Console.WriteLine("isECN_Echo" + isECN_Echo);
-                            Console.WriteLine("Window Size : " + tcpWindows);
-                            Console.WriteLine("Checksum : " + checksum);
-                            Console.WriteLine("Checksum is Valid : " + checksumValid);*/
-                            protocol = "TCPV4";
-                        }
-                        var udpPacket = ethernetPacket.Extract<PacketDotNet.UdpPacket>();
-                        if (udpPacket != null)
-                        {
-
-                            dstPort = udpPacket.DestinationPort.ToString();
-                            srcPort = udpPacket.SourcePort.ToString();
-                            /*bool isValidCheckSum = udpPacket.ValidChecksum;
-                            string checkSum = udpPacket.Checksum.ToString();
-                            string length = udpPacket.Length.ToString();
-                            Console.WriteLine("Source Port : " + srcPort);
-                            Console.WriteLine("Destination Port : " + dstPort);
-                            Console.WriteLine("Length : " + length);
-                            Console.WriteLine("Checksum : " + checkSum);
-                            Console.WriteLine("IsValid checksum : " + isValidCheckSum);*/
-                            protocol = "UDPV4";
-                        }
-
-
-                    }
-                    else if (ethernetPacketType == "IPv6")
-                    {
-
-                        var ipv6Packet = ethernetPacket.Extract<PacketDotNet.IPPacket>();
-                        if (ipv6Packet != null)
-                        {
-
-                            srcIPAddr = ipv6Packet.SourceAddress.ToString();
-                            srcIPAddr = ipv6Packet.DestinationAddress.ToString();
-                            protocol = "IPV6";
-                            /*string version = ipv6Packet.Version.ToString();
-                            int payloadLength = ipv6Packet.PayloadLength;
-                            string ttl = ipv6Packet.TimeToLive.ToString();
-                            string hop = ipv6Packet.HopLimit.ToString();
-                            string nextProtocol = ipv6Packet.Protocol.ToString();*/
-
-                            /*Console.WriteLine("4. Internet Protocol Version 6");
-                            Console.WriteLine("Version : " + version);
-                            Console.WriteLine("Payload Length : " + payloadLength);
-                            Console.WriteLine("Next Protocol : " + nextProtocol);
-                            Console.WriteLine("Hop Limit : " + hop);
-                            Console.WriteLine("Source Address : " + srcIp);
-                            Console.WriteLine("Destination Address : " + dstIp);
-                            Console.WriteLine("TTL : "+ ttl);*/
-
-                        }
-                        var icmp6Packet = frame.Extract<PacketDotNet.IcmpV6Packet>();
-                        if (icmp6Packet != null)
-                        {
-                            protocol = "ICMPV6";
-                            /*string code = icmp6Packet.Code.ToString();
-                            string Icmp6type = icmp6Packet.Type.ToString();
-                            string chekcsum = icmp6Packet.Checksum.ToString();
-                            bool validChecksum = icmp6Packet.ValidIcmpChecksum;*/
-                            /*Console.WriteLine("Type : " + Icmp6type);
-                            Console.WriteLine("Code : " + code);
-                            Console.WriteLine("Checksum : " + chekcsum);
-                            Console.WriteLine("isValidChecksem : " + validChecksum);*/
-
-                        }
-                        var tcpPacket = ethernetPacket.Extract<PacketDotNet.TcpPacket>();
-                        if (tcpPacket != null)
-                        {
-                            protocol = "TCPV6";
-                            srcPort = tcpPacket.SourcePort.ToString();
-                            dstPort = tcpPacket.DestinationPort.ToString();
-                            /*string checksum = tcpPacket.Checksum.ToString();
-                            string checksumValid = tcpPacket.ValidChecksum.ToString();
-                            bool isAckPacket = tcpPacket.Acknowledgment;
-                            bool isRstPacket = tcpPacket.Reset;
-                            string ackNmber = tcpPacket.AcknowledgmentNumber.ToString();
-                            bool isCongestionWindowsReduced = tcpPacket.CongestionWindowReduced;
-                            bool isFinishedPacket = tcpPacket.Finished;
-                            bool isPushPacket = tcpPacket.Push;
-                            string sequenceNumber = tcpPacket.SequenceNumber.ToString();
-                            bool isSynchronize = tcpPacket.Synchronize;
-                            bool isUrgent = tcpPacket.Urgent;
-                            bool isNonce = tcpPacket.NonceSum;
-                            bool isECN_Echo = tcpPacket.ExplicitCongestionNotificationEcho;
-                            int length = tcpPacket.TotalPacketLength;
-                            string tcpWindows = tcpPacket.WindowSize.ToString();*/
-
-                            /*Console.WriteLine("Source Port : " + srcPort);
-                            Console.WriteLine("Destination Port : " + dstPort);
-                            Console.WriteLine("Sequence Number : " + sequenceNumber);
-                            Console.WriteLine("Length : " + length);
-                            Console.WriteLine("Ack number : " + ackNmber);
-                            Console.WriteLine("isAckPacket : " + isAckPacket);
-                            Console.WriteLine("isRstPacket" + isRstPacket);
-                            Console.WriteLine("isCongestionWindowsReduced" + isCongestionWindowsReduced);
-                            Console.WriteLine("isFinishedPacket" + isFinishedPacket);
-                            Console.WriteLine("isPushPacket" + isPushPacket);
-                            Console.WriteLine("isSynchronize" + isSynchronize);
-                            Console.WriteLine("isUrgent" + isUrgent);
-                            Console.WriteLine("isNonce" + isNonce);
-                            Console.WriteLine("isECN_Echo" + isECN_Echo);
-                            Console.WriteLine("Window Size : " + tcpWindows);
-                            Console.WriteLine("Checksum : " + checksum);
-                            Console.WriteLine("Checksum is Valid : " + checksumValid);*/
-                        }
-                        var udpPacket = ethernetPacket.Extract<PacketDotNet.UdpPacket>();
-                        if (udpPacket != null)
-                        {
-                            protocol = "UDPV6";
-                            dstPort = udpPacket.DestinationPort.ToString();
-                            srcPort = udpPacket.SourcePort.ToString();
-                            /*bool isValidCheckSum = udpPacket.ValidChecksum;
-                            string length = udpPacket.Length.ToString();
-                            string checkSum = udpPacket.Checksum.ToString();
-
-                            Console.WriteLine("Source Port : " + srcPort);
-                            Console.WriteLine("Destination Port : " + dstPort);
-                            Console.WriteLine("Length : " + length);
-                            Console.WriteLine("Checksum : " + checkSum);
-                            Console.WriteLine("IsValid checksum : " + isValidCheckSum);*/
-                        }
-
-                    }
                 }
-                
+
+                var arpPacket = ethernetPacket.Extract<PacketDotNet.ArpPacket>();
+                if (arpPacket != null)
+                {
+                    srcMacAddr = arpPacket.SenderHardwareAddress.ToString();
+                    dstMacAddr = arpPacket.TargetHardwareAddress.ToString();
+                    srcIPAddr = arpPacket.SenderProtocolAddress.ToString();
+                    dstIPAddr = arpPacket.TargetProtocolAddress.ToString();
+                    string operation = arpPacket.Operation.ToString();
+                    string protocolType = arpPacket.ProtocolAddressType.ToString();
+                    string hardWareType = arpPacket.HardwareAddressType.ToString();
+                    int hardwareSize = arpPacket.HardwareAddressLength;
+                    int protocolSize = arpPacket.ProtocolAddressLength;
+
+                    if (dstMacAddr == "000000000000")
+                    {
+                        dstMacAddr = "ffffffffffff";   
+                    }
+                    protocol = "ARP";
+                }
+
+                var ipv4Packet = ethernetPacket.Extract<PacketDotNet.IPPacket>();
+                if (ipv4Packet != null)
+                {
+                    srcIPAddr = ipv4Packet.SourceAddress.ToString();
+                    dstIPAddr = ipv4Packet.DestinationAddress.ToString();
+                    protocol = "IPV4";
+                    string version = ipv4Packet.Version.ToString();
+                    int headerLength = ipv4Packet.HeaderLength;
+                    int totalLength = ipv4Packet.TotalLength;
+                    string ttl = ipv4Packet.TimeToLive.ToString();
+                    string hop = ipv4Packet.HopLimit.ToString();
+                    string nextProtocol = ipv4Packet.Protocol.ToString();
+                }
+
+                var ipv6Packet = ethernetPacket.Extract<PacketDotNet.IPPacket>();
+                if (ipv6Packet != null)
+                {
+                    srcIPAddr = ipv6Packet.SourceAddress.ToString();
+                    srcIPAddr = ipv6Packet.DestinationAddress.ToString();
+                    protocol = "IPV6";
+                    string version = ipv6Packet.Version.ToString();
+                    int payloadLength = ipv6Packet.PayloadLength;
+                    string ttl = ipv6Packet.TimeToLive.ToString();
+                    string hop = ipv6Packet.HopLimit.ToString();
+                    string nextProtocol = ipv6Packet.Protocol.ToString();
+                }
+
+                var icmpPacket = ethernetPacket.Extract<PacketDotNet.IcmpV4Packet>();
+                if (icmpPacket != null)
+                {
+                    string operation = icmpPacket.TypeCode.ToString();
+                    string chekcsum = icmpPacket.Checksum.ToString();
+                    bool validChecksum = icmpPacket.ValidIcmpChecksum;
+                    string Id = icmpPacket.Id.ToString();
+                    string sequence = icmpPacket.Sequence.ToString();
+                    protocol = "ICMPV4";
+                }
+
+                var icmp6Packet = frame.Extract<PacketDotNet.IcmpV6Packet>();
+                if (icmp6Packet != null)
+                {
+                    protocol = "ICMPV6";
+                    string code = icmp6Packet.Code.ToString();
+                    string Icmp6type = icmp6Packet.Type.ToString();
+                    string chekcsum = icmp6Packet.Checksum.ToString();
+                    bool validChecksum = icmp6Packet.ValidIcmpChecksum;
+                }
+
+                var tcpPacket = ethernetPacket.Extract<PacketDotNet.TcpPacket>();
+                if (tcpPacket != null)
+                {
+                    srcPort = tcpPacket.SourcePort.ToString();
+                    dstPort = tcpPacket.DestinationPort.ToString();
+                    string checksum = tcpPacket.Checksum.ToString();
+                    string checksumValid = tcpPacket.ValidChecksum.ToString();
+                    bool isAckPacket = tcpPacket.Acknowledgment;
+                    bool isRstPacket = tcpPacket.Reset;
+                    string ackNmber = tcpPacket.AcknowledgmentNumber.ToString();
+                    bool isCongestionWindowsReduced = tcpPacket.CongestionWindowReduced;
+                    bool isFinishedPacket = tcpPacket.Finished;
+                    bool isPushPacket = tcpPacket.Push;
+                    string sequenceNumber = tcpPacket.SequenceNumber.ToString();
+                    bool isSynchronize = tcpPacket.Synchronize;
+                    bool isUrgent = tcpPacket.Urgent;
+                    bool isNonce = tcpPacket.NonceSum;
+                    bool isECN_Echo = tcpPacket.ExplicitCongestionNotificationEcho;
+                    int length = tcpPacket.TotalPacketLength;
+                    string tcpWindows = tcpPacket.WindowSize.ToString();
+                    protocol = "TCP";
+                }
+
+                var udpPacket = ethernetPacket.Extract<PacketDotNet.UdpPacket>();
+                if (udpPacket != null)
+                {
+
+                    dstPort = udpPacket.DestinationPort.ToString();
+                    srcPort = udpPacket.SourcePort.ToString();
+                    bool isValidCheckSum = udpPacket.ValidChecksum;
+                    string checkSum = udpPacket.Checksum.ToString();
+                    string length = udpPacket.Length.ToString();
+                    protocol = "UDP";
+                }
+
+                var dhcpPacket = ethernetPacket.Extract<PacketDotNet.DhcpV4Packet>();
+                if (dhcpPacket != null)
+                {
+                    string operation = dhcpPacket.Operation.ToString();
+                    string dhcpSender = dhcpPacket.ClientAddress.ToString();
+                    bool isBroadcast = dhcpPacket.Broadcast;
+                    string gatewayAddress = dhcpPacket.GatewayAddress.ToString();
+                    string hardwareType = dhcpPacket.HardwareType.ToString();
+                    string messageType = dhcpPacket.MessageType.ToString();
+                    string transactionId = dhcpPacket.TransactionId.ToString();
+                    string hops = dhcpPacket.Hops.ToString();
+                    string serverAddress = dhcpPacket.ServerAddress.ToString();
+                    string flag = dhcpPacket.Flags.ToString();
+                }
+
                 this.listView3.Items.Add(new ListViewItem(new String[] { packetIndex.ToString(), srcIPAddr, dstIPAddr, srcMacAddr, dstMacAddr, srcPort, dstPort, protocol, frameLength, packetTime }));
-                
+
             }
         }
-
         private void timer1_Tick(object sender, EventArgs e)
         {
             if (backgroundWorker1.IsBusy == false)
@@ -908,8 +787,7 @@ namespace MIMIRSOFT
                 clipBoardInfo += "Protocole --> " + protocol + "  \n";
                 clipBoardInfo += "Taille --> " + length + "  \n";
                 clipBoardInfo += "Temps d'arrivée --> " + ArrivalTime + "  \n";
-            }
-                
+            }    
             
             clipBoardInfo += "///////////////////////////////////////////////// \n";
 

@@ -91,6 +91,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
+            this.processPath = new System.Windows.Forms.ColumnHeader();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -444,7 +445,8 @@
             this.localAddress,
             this.remotePort,
             this.remoteAddress,
-            this.state});
+            this.state,
+            this.processPath});
             this.listView2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView2.FullRowSelect = true;
             this.listView2.Location = new System.Drawing.Point(3, 3);
@@ -589,6 +591,11 @@
             this.backgroundWorker1.WorkerSupportsCancellation = true;
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
+            // processPath
+            // 
+            this.processPath.Text = "Chemin du processus";
+            this.processPath.Width = 200;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -680,5 +687,6 @@
         private ColumnHeader Pprotocol;
         private ColumnHeader length;
         private ColumnHeader ArrivalTime;
+        private ColumnHeader processPath;
     }
 }
