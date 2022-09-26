@@ -440,19 +440,18 @@ namespace MIMIRSOFT
                 var ethernetPacket = frame.Extract<PacketDotNet.EthernetPacket>();
                 if (ethernetPacket != null)
                 {
-
-                    srcMacAddr = ethernetPacket.DestinationHardwareAddress.ToString();
-                    string srcMacConstructor = NetworkAnalysisUtility.findNicConstructorforPcap(srcMacAddr);
-                    dstMacAddr = ethernetPacket.SourceHardwareAddress.ToString();
-                    string dstMacConstructor = NetworkAnalysisUtility.findNicConstructorforPcap(dstMacAddr);
+                    srcMacAddr = NetworkAnalysisUtility.formatMacAddress(ethernetPacket.DestinationHardwareAddress.ToString());
+                    string srcMacConstructor = NetworkAnalysisUtility.findNicConstructorforPcap(ethernetPacket.DestinationHardwareAddress.ToString());
+                    dstMacAddr = NetworkAnalysisUtility.formatMacAddress(ethernetPacket.SourceHardwareAddress.ToString());
+                    string dstMacConstructor = NetworkAnalysisUtility.findNicConstructorforPcap(ethernetPacket.SourceHardwareAddress.ToString());
                     ethernetPacketType = ethernetPacket.Type.ToString();
                 }
 
                 var arpPacket = ethernetPacket.Extract<PacketDotNet.ArpPacket>();
                 if (arpPacket != null)
                 {
-                    srcMacAddr = arpPacket.SenderHardwareAddress.ToString();
-                    dstMacAddr = arpPacket.TargetHardwareAddress.ToString();
+                    srcMacAddr = NetworkAnalysisUtility.formatMacAddress(arpPacket.SenderHardwareAddress.ToString());
+                    dstMacAddr = NetworkAnalysisUtility.formatMacAddress(arpPacket.TargetHardwareAddress.ToString());
                     srcIPAddr = arpPacket.SenderProtocolAddress.ToString();
                     dstIPAddr = arpPacket.TargetProtocolAddress.ToString();
                     string operation = arpPacket.Operation.ToString();
@@ -460,11 +459,6 @@ namespace MIMIRSOFT
                     string hardWareType = arpPacket.HardwareAddressType.ToString();
                     int hardwareSize = arpPacket.HardwareAddressLength;
                     int protocolSize = arpPacket.ProtocolAddressLength;
-
-                    if (dstMacAddr == "000000000000")
-                    {
-                        dstMacAddr = "ffffffffffff";   
-                    }
                     protocol = "ARP";
                 }
 
@@ -581,10 +575,6 @@ namespace MIMIRSOFT
                 }
                 
             }
-            
-            AddNetworkAndPacketCaptureAdaptater();
-            MakeNetWorkAdaptaterToolStripCheckable();
-
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -918,6 +908,7 @@ namespace MIMIRSOFT
                 
             }else if (tabControl1.SelectedIndex == 2)
             {
+                packetIndex = 0;
                 ClearPacketCaptureListView();
             }
 
@@ -935,6 +926,10 @@ namespace MIMIRSOFT
             deviceSearchFm.Show();
         }
 
-       
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            AddNetworkAndPacketCaptureAdaptater();
+            MakeNetWorkAdaptaterToolStripCheckable();
+        }
     } 
 }

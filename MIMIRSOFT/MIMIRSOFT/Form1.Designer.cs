@@ -76,6 +76,7 @@
             this.remotePort = new System.Windows.Forms.ColumnHeader();
             this.remoteAddress = new System.Windows.Forms.ColumnHeader();
             this.state = new System.Windows.Forms.ColumnHeader();
+            this.processPath = new System.Windows.Forms.ColumnHeader();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.listView3 = new System.Windows.Forms.ListView();
             this.index = new System.Windows.Forms.ColumnHeader();
@@ -91,7 +92,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
-            this.processPath = new System.Windows.Forms.ColumnHeader();
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -496,6 +497,11 @@
             this.state.Text = "Etat";
             this.state.Width = 100;
             // 
+            // processPath
+            // 
+            this.processPath.Text = "Chemin du processus";
+            this.processPath.Width = 200;
+            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.listView3);
@@ -591,10 +597,11 @@
             this.backgroundWorker1.WorkerSupportsCancellation = true;
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
-            // processPath
+            // timer2
             // 
-            this.processPath.Text = "Chemin du processus";
-            this.processPath.Width = 200;
+            this.timer2.Enabled = true;
+            this.timer2.Interval = 2000;
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
             // Form1
             // 
@@ -688,5 +695,6 @@
         private ColumnHeader length;
         private ColumnHeader ArrivalTime;
         private ColumnHeader processPath;
+        private System.Windows.Forms.Timer timer2;
     }
 }

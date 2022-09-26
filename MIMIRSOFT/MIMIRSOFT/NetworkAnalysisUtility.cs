@@ -128,14 +128,26 @@ namespace MIMIRSOFT
             if (substrings.Length >= 8)
             {
                 macAddress = substrings[3].Substring(Math.Max(0, substrings[3].Length - 2))
-                         + "-" + substrings[4] + "-" + substrings[5] + "-" + substrings[6]
-                         + "-" + substrings[7] + "-"
+                         + ":" + substrings[4] + ":" + substrings[5] + ":" + substrings[6]
+                         + ":" + substrings[7] + ":"
                          + substrings[8].Substring(0, 2);
 
             }
             return macAddress;
         }
 
+        public static string formatMacAddress(string p_macAddress)
+        {
+            
+            if(p_macAddress.Length == 12)
+            {
+                return p_macAddress.Substring(0, 2) + ":" + p_macAddress.Substring(2, 2) + ":" + p_macAddress.Substring(4, 2) + ":" + p_macAddress.Substring(6, 2) + ":" + p_macAddress.Substring(8, 2) + ":" + p_macAddress.Substring(10, 2);
+            }
+            else
+            {
+                return "";
+            } 
+        }
         public static string getIPV4DefaultGatewayAdressOfAdaptater(NetworkInterface adapter)
         {
             string defaultGatewayIPAdress = "";
