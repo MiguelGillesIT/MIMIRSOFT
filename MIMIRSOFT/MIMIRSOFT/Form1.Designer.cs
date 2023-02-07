@@ -104,13 +104,15 @@
             // menuStrip1
             // 
             this.menuStrip1.BackColor = System.Drawing.SystemColors.Control;
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fichierToolStripMenuItem,
             this.optionsToolStripMenuItem,
             this.aideToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1063, 24);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 3, 0, 3);
+            this.menuStrip1.Size = new System.Drawing.Size(1215, 30);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -119,14 +121,14 @@
             this.fichierToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveElementsToolStripMenuItem});
             this.fichierToolStripMenuItem.Name = "fichierToolStripMenuItem";
-            this.fichierToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
+            this.fichierToolStripMenuItem.Size = new System.Drawing.Size(66, 24);
             this.fichierToolStripMenuItem.Text = "Fichier";
             // 
             // saveElementsToolStripMenuItem
             // 
             this.saveElementsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveElementsToolStripMenuItem.Image")));
             this.saveElementsToolStripMenuItem.Name = "saveElementsToolStripMenuItem";
-            this.saveElementsToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.saveElementsToolStripMenuItem.Size = new System.Drawing.Size(261, 26);
             this.saveElementsToolStripMenuItem.Text = "Sauvegarder les éléments";
             this.saveElementsToolStripMenuItem.Click += new System.EventHandler(this.saveElementsToolStripMenuItem_Click);
             // 
@@ -138,13 +140,13 @@
             this.protocoleDeTransportToolStripMenuItem,
             this.périodeDeRafraîchissementToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(75, 24);
             this.optionsToolStripMenuItem.Text = "Options";
             // 
             // NetAdaptToolStripMenuItem
             // 
             this.NetAdaptToolStripMenuItem.Name = "NetAdaptToolStripMenuItem";
-            this.NetAdaptToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.NetAdaptToolStripMenuItem.Size = new System.Drawing.Size(279, 26);
             this.NetAdaptToolStripMenuItem.Text = "Carte Réseau";
             this.NetAdaptToolStripMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.NetAdaptToolStripMenuItem_DropDownItemClicked);
             // 
@@ -154,7 +156,7 @@
             this.iPV4ToolStripMenuItem,
             this.iPV6ToolStripMenuItem});
             this.typeDeRéseauToolStripMenuItem.Name = "typeDeRéseauToolStripMenuItem";
-            this.typeDeRéseauToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.typeDeRéseauToolStripMenuItem.Size = new System.Drawing.Size(279, 26);
             this.typeDeRéseauToolStripMenuItem.Text = "Version IP";
             // 
             // iPV4ToolStripMenuItem
@@ -163,14 +165,14 @@
             this.iPV4ToolStripMenuItem.CheckOnClick = true;
             this.iPV4ToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.iPV4ToolStripMenuItem.Name = "iPV4ToolStripMenuItem";
-            this.iPV4ToolStripMenuItem.Size = new System.Drawing.Size(97, 22);
+            this.iPV4ToolStripMenuItem.Size = new System.Drawing.Size(121, 26);
             this.iPV4ToolStripMenuItem.Text = "IPV4";
             // 
             // iPV6ToolStripMenuItem
             // 
             this.iPV6ToolStripMenuItem.CheckOnClick = true;
             this.iPV6ToolStripMenuItem.Name = "iPV6ToolStripMenuItem";
-            this.iPV6ToolStripMenuItem.Size = new System.Drawing.Size(97, 22);
+            this.iPV6ToolStripMenuItem.Size = new System.Drawing.Size(121, 26);
             this.iPV6ToolStripMenuItem.Text = "IPV6";
             // 
             // protocoleDeTransportToolStripMenuItem
@@ -179,21 +181,21 @@
             this.tCPToolStripMenuItem,
             this.uDPToolStripMenuItem});
             this.protocoleDeTransportToolStripMenuItem.Name = "protocoleDeTransportToolStripMenuItem";
-            this.protocoleDeTransportToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.protocoleDeTransportToolStripMenuItem.Size = new System.Drawing.Size(279, 26);
             this.protocoleDeTransportToolStripMenuItem.Text = "Protocole de transport";
             // 
             // tCPToolStripMenuItem
             // 
             this.tCPToolStripMenuItem.CheckOnClick = true;
             this.tCPToolStripMenuItem.Name = "tCPToolStripMenuItem";
-            this.tCPToolStripMenuItem.Size = new System.Drawing.Size(97, 22);
+            this.tCPToolStripMenuItem.Size = new System.Drawing.Size(121, 26);
             this.tCPToolStripMenuItem.Text = "TCP ";
             // 
             // uDPToolStripMenuItem
             // 
             this.uDPToolStripMenuItem.CheckOnClick = true;
             this.uDPToolStripMenuItem.Name = "uDPToolStripMenuItem";
-            this.uDPToolStripMenuItem.Size = new System.Drawing.Size(97, 22);
+            this.uDPToolStripMenuItem.Size = new System.Drawing.Size(121, 26);
             this.uDPToolStripMenuItem.Text = "UDP";
             // 
             // périodeDeRafraîchissementToolStripMenuItem
@@ -203,7 +205,7 @@
             this.sToolStripMenuItem1,
             this.sToolStripMenuItem2});
             this.périodeDeRafraîchissementToolStripMenuItem.Name = "périodeDeRafraîchissementToolStripMenuItem";
-            this.périodeDeRafraîchissementToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.périodeDeRafraîchissementToolStripMenuItem.Size = new System.Drawing.Size(279, 26);
             this.périodeDeRafraîchissementToolStripMenuItem.Text = "Période de rafraîchissement ";
             this.périodeDeRafraîchissementToolStripMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.périodeDeRafraîchissementToolStripMenuItem_DropDownItemClicked);
             // 
@@ -213,21 +215,21 @@
             this.sToolStripMenuItem.CheckOnClick = true;
             this.sToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.sToolStripMenuItem.Name = "sToolStripMenuItem";
-            this.sToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
+            this.sToolStripMenuItem.Size = new System.Drawing.Size(133, 26);
             this.sToolStripMenuItem.Text = "20 sec";
             // 
             // sToolStripMenuItem1
             // 
             this.sToolStripMenuItem1.CheckOnClick = true;
             this.sToolStripMenuItem1.Name = "sToolStripMenuItem1";
-            this.sToolStripMenuItem1.Size = new System.Drawing.Size(106, 22);
+            this.sToolStripMenuItem1.Size = new System.Drawing.Size(133, 26);
             this.sToolStripMenuItem1.Text = "30 sec";
             // 
             // sToolStripMenuItem2
             // 
             this.sToolStripMenuItem2.CheckOnClick = true;
             this.sToolStripMenuItem2.Name = "sToolStripMenuItem2";
-            this.sToolStripMenuItem2.Size = new System.Drawing.Size(106, 22);
+            this.sToolStripMenuItem2.Size = new System.Drawing.Size(133, 26);
             this.sToolStripMenuItem2.Text = "50 sec";
             // 
             // aideToolStripMenuItem
@@ -235,18 +237,19 @@
             this.aideToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.àProposToolStripMenuItem});
             this.aideToolStripMenuItem.Name = "aideToolStripMenuItem";
-            this.aideToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.aideToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
             this.aideToolStripMenuItem.Text = "Aide";
             // 
             // àProposToolStripMenuItem
             // 
             this.àProposToolStripMenuItem.Name = "àProposToolStripMenuItem";
-            this.àProposToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.àProposToolStripMenuItem.Size = new System.Drawing.Size(153, 26);
             this.àProposToolStripMenuItem.Text = "À propos";
             // 
             // toolStrip1
             // 
             this.toolStrip1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.startBtn,
             this.stopBtn,
@@ -255,9 +258,9 @@
             this.deleteBtn,
             this.searchBtn,
             this.resetBtn});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 30);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1063, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1215, 27);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -267,7 +270,7 @@
             this.startBtn.Image = ((System.Drawing.Image)(resources.GetObject("startBtn.Image")));
             this.startBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.startBtn.Name = "startBtn";
-            this.startBtn.Size = new System.Drawing.Size(23, 22);
+            this.startBtn.Size = new System.Drawing.Size(29, 24);
             this.startBtn.Text = "Lancer le scan";
             this.startBtn.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.startBtn.TextDirection = System.Windows.Forms.ToolStripTextDirection.Vertical270;
@@ -279,7 +282,7 @@
             this.stopBtn.Image = ((System.Drawing.Image)(resources.GetObject("stopBtn.Image")));
             this.stopBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.stopBtn.Name = "stopBtn";
-            this.stopBtn.Size = new System.Drawing.Size(23, 22);
+            this.stopBtn.Size = new System.Drawing.Size(29, 24);
             this.stopBtn.Text = "Stopper le scan";
             this.stopBtn.Click += new System.EventHandler(this.stopBtn_Click);
             // 
@@ -290,7 +293,7 @@
             this.saveBtn.Image = ((System.Drawing.Image)(resources.GetObject("saveBtn.Image")));
             this.saveBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveBtn.Name = "saveBtn";
-            this.saveBtn.Size = new System.Drawing.Size(23, 22);
+            this.saveBtn.Size = new System.Drawing.Size(29, 24);
             this.saveBtn.Text = "Sauvegarder l\'élément";
             this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
             // 
@@ -301,7 +304,7 @@
             this.detailBtn.Image = ((System.Drawing.Image)(resources.GetObject("detailBtn.Image")));
             this.detailBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.detailBtn.Name = "detailBtn";
-            this.detailBtn.Size = new System.Drawing.Size(23, 22);
+            this.detailBtn.Size = new System.Drawing.Size(29, 24);
             this.detailBtn.Text = "Copier";
             this.detailBtn.Click += new System.EventHandler(this.detailBtn_Click);
             // 
@@ -312,7 +315,7 @@
             this.deleteBtn.Image = ((System.Drawing.Image)(resources.GetObject("deleteBtn.Image")));
             this.deleteBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.deleteBtn.Name = "deleteBtn";
-            this.deleteBtn.Size = new System.Drawing.Size(23, 22);
+            this.deleteBtn.Size = new System.Drawing.Size(29, 24);
             this.deleteBtn.Text = "Supprimer l\'élément";
             this.deleteBtn.Click += new System.EventHandler(this.deleteBtn_Click);
             // 
@@ -322,7 +325,7 @@
             this.searchBtn.Image = ((System.Drawing.Image)(resources.GetObject("searchBtn.Image")));
             this.searchBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.searchBtn.Name = "searchBtn";
-            this.searchBtn.Size = new System.Drawing.Size(23, 22);
+            this.searchBtn.Size = new System.Drawing.Size(29, 24);
             this.searchBtn.Text = "Filtrer";
             this.searchBtn.Click += new System.EventHandler(this.searchBtn_Click);
             // 
@@ -332,7 +335,7 @@
             this.resetBtn.Image = ((System.Drawing.Image)(resources.GetObject("resetBtn.Image")));
             this.resetBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.resetBtn.Name = "resetBtn";
-            this.resetBtn.Size = new System.Drawing.Size(23, 22);
+            this.resetBtn.Size = new System.Drawing.Size(29, 24);
             this.resetBtn.Text = "Reinitialiser";
             this.resetBtn.Click += new System.EventHandler(this.resetBtn_Click);
             // 
@@ -341,19 +344,21 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(0, 139);
+            this.tabControl1.Location = new System.Drawing.Point(0, 185);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1063, 423);
+            this.tabControl1.Size = new System.Drawing.Size(1215, 564);
             this.tabControl1.TabIndex = 3;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.listView1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 24);
+            this.tabPage1.Location = new System.Drawing.Point(4, 29);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1055, 395);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tabPage1.Size = new System.Drawing.Size(1207, 531);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Réseau";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -371,9 +376,10 @@
             this.lastDetection});
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
-            this.listView1.Location = new System.Drawing.Point(3, 3);
+            this.listView1.Location = new System.Drawing.Point(3, 4);
+            this.listView1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(1049, 389);
+            this.listView1.Size = new System.Drawing.Size(1201, 523);
             this.listView1.SmallImageList = this.imageList1;
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
@@ -428,10 +434,11 @@
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.listView2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
+            this.tabPage2.Location = new System.Drawing.Point(4, 29);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1055, 395);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tabPage2.Size = new System.Drawing.Size(1207, 531);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Ports";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -450,9 +457,10 @@
             this.processPath});
             this.listView2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView2.FullRowSelect = true;
-            this.listView2.Location = new System.Drawing.Point(3, 3);
+            this.listView2.Location = new System.Drawing.Point(3, 4);
+            this.listView2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(1049, 389);
+            this.listView2.Size = new System.Drawing.Size(1201, 523);
             this.listView2.TabIndex = 0;
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.Details;
@@ -505,10 +513,11 @@
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.listView3);
-            this.tabPage3.Location = new System.Drawing.Point(4, 24);
+            this.tabPage3.Location = new System.Drawing.Point(4, 29);
+            this.tabPage3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1055, 395);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tabPage3.Size = new System.Drawing.Size(1207, 531);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Paquets";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -528,9 +537,10 @@
             this.ArrivalTime});
             this.listView3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView3.FullRowSelect = true;
-            this.listView3.Location = new System.Drawing.Point(3, 3);
+            this.listView3.Location = new System.Drawing.Point(3, 4);
+            this.listView3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView3.Name = "listView3";
-            this.listView3.Size = new System.Drawing.Size(1049, 389);
+            this.listView3.Size = new System.Drawing.Size(1201, 523);
             this.listView3.TabIndex = 0;
             this.listView3.UseCompatibleStateImageBehavior = false;
             this.listView3.View = System.Windows.Forms.View.Details;
@@ -605,15 +615,16 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1063, 562);
+            this.ClientSize = new System.Drawing.Size(1215, 749);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "   MIMIRSOFT";

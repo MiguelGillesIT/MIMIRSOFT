@@ -50,7 +50,6 @@ namespace MIMIRSOFT
             SetDoubleBuffer(listView3,true);
 
             timer1.Interval = Int32.Parse(sToolStripMenuItem.Text.Substring(0,2)) * 1000;
-
         }
 
         public void MakeNetWorkAdaptaterToolStripCheckable()
@@ -178,12 +177,12 @@ namespace MIMIRSOFT
             
         }
 
-        private void device_OnPacketArrival(object sender, PacketCapture e)
+       /* private void device_OnPacketArrival(object sender, PacketCapture e)
         {
             var time = e.Header.Timeval.Date;
             var rawPacket = e.GetPacket();
             addNewPacketToList(rawPacket, time);
-        }
+        }*/
 
         private void périodeDeRafraîchissementToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
@@ -224,9 +223,9 @@ namespace MIMIRSOFT
                 }
                 if(currentPacketCaptureDevice.Started == false)
                 {
-                    currentPacketCaptureDevice.Open(DeviceModes.Promiscuous, 200);
+                    /*currentPacketCaptureDevice.Open(DeviceModes.Promiscuous, 200);
                     currentPacketCaptureDevice.OnPacketArrival += new SharpPcap.PacketArrivalEventHandler(device_OnPacketArrival);
-                    currentPacketCaptureDevice.StartCapture();
+                    currentPacketCaptureDevice.StartCapture();*/
                 }
             }
             else
@@ -369,7 +368,7 @@ namespace MIMIRSOFT
         }
 
 
-        void addNewPacketToList(RawCapture rawPacket, DateTime time)
+        /*void addNewPacketToList(RawCapture rawPacket, DateTime time)
         {
             if (InvokeRequired)
             {
@@ -563,7 +562,7 @@ namespace MIMIRSOFT
                 this.listView3.Items.Add(new ListViewItem(new String[] { packetIndex.ToString(), srcIPAddr, dstIPAddr, srcMacAddr, dstMacAddr, srcPort, dstPort, protocol, frameLength, packetTime }));
                 this.listView3.EnsureVisible(this.listView3.Items.Count - 1);
             }
-        }
+        }*/
         private void timer1_Tick(object sender, EventArgs e)
         {
             if (backgroundWorker1.IsBusy == false)

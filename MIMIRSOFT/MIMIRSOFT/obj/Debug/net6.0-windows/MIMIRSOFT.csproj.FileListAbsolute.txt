@@ -41,3 +41,27 @@ D:\PROJETS\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\bin\Debug\net6.0-windows\PacketDotNet.d
 D:\PROJETS\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\bin\Debug\net6.0-windows\SharpPcap.dll
 D:\PROJETS\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.csproj.CopyComplete
 D:\PROJETS\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.packetSearchForm.resources
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.dll
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\refint\MIMIRSOFT.dll
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.pdb
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\bin\Debug\net6.0-windows\MIMIRSOFT.exe
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\bin\Debug\net6.0-windows\MIMIRSOFT.deps.json
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\bin\Debug\net6.0-windows\MIMIRSOFT.runtimeconfig.json
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\bin\Debug\net6.0-windows\MIMIRSOFT.dll
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\bin\Debug\net6.0-windows\MIMIRSOFT.pdb
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\bin\Debug\net6.0-windows\PacketDotNet.dll
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\bin\Debug\net6.0-windows\SharpPcap.dll
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.csproj.AssemblyReference.cache
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.Form1.resources
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.deviceDetailForm.resources
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.deviceSearchForm.resources
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.packetSearchForm.resources
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.Properties.Resources.resources
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.csproj.GenerateResource.cache
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.AssemblyInfoInputs.cache
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.AssemblyInfo.cs
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.csproj.CopyComplete
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\MIMIRSOFT.genruntimeconfig.cache
+C:\Users\user\Desktop\INDP3 CySed\PROJET\MIMIRSOFT\MIMIRSOFT\MIMIRSOFT\obj\Debug\net6.0-windows\ref\MIMIRSOFT.dll

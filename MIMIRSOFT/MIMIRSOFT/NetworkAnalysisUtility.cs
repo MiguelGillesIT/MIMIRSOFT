@@ -52,27 +52,41 @@ namespace MIMIRSOFT
 
         public static string findNicConstructor(string macAddress)
         {
-            if(macAddress.Length != 0)
+
+            if (macAddress.Length != 0)
             {
+                string currentDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+                string rootDirectory = new DirectoryInfo(currentDirectory).Parent.Parent.Parent.Parent.Parent.FullName;
+                string macAddressFile = rootDirectory + "\\macAdaptaterConstructor.txt";
+
                 string macPrefix = macAddress.Substring(0, 8);
-                if (!macPrefix.Contains("-"))
+                if (!(macPrefix.Contains("-")))
                 {
                     macPrefix = macAddress.Substring(0, 6);
-                    foreach (string line in File.ReadLines(@"D:\PROJETS\MIMIRSOFT\macAdaptaterConstructor.txt"))
+
+                    using (StreamReader sr = new StreamReader(macAddressFile))
                     {
-                        if (line.Contains(macPrefix) & line.Contains("(base 16)"))
+                        while (!sr.EndOfStream)
                         {
-                            return line.Substring(22);
+                            string line = sr.ReadLine();
+                            if (line.Contains(macPrefix) & line.Contains("(base 16)"))
+                            {
+                                return line.Substring(22);
+                            }
                         }
                     }
                 }
                 else
                 {
-                    foreach (string line in File.ReadLines(@"D:\PROJETS\MIMIRSOFT\macAdaptaterConstructor.txt"))
+                    using (StreamReader sr = new StreamReader(macAddressFile))
                     {
-                        if (line.Contains(macPrefix) & line.Contains("(hex)"))
+                        while (!sr.EndOfStream)
                         {
-                            return line.Substring(18);
+                            string line = sr.ReadLine();
+                            if (line.Contains(macPrefix) & line.Contains("(hex)"))
+                            {
+                                return line.Substring(18);
+                            }
                         }
                     }
                 }
@@ -81,21 +95,28 @@ namespace MIMIRSOFT
             else
             {
                 return "";
-            }
-           
+            } 
         }
 
         public static string findNicConstructorforPcap(string macAddress)
         {
 
             string macPrefix = macAddress.Substring(0, 6);
-            foreach (string line in File.ReadLines(@"D:\PROJETS\NETWORKTEST\macAdaptaterConstructor.txt"))
+            string currentDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+            string rootDirectory = new DirectoryInfo(currentDirectory).Parent.Parent.Parent.Parent.Parent.FullName;
+            string macAddressFile = rootDirectory + "\\macAdaptaterConstructor.txt";
+            using (StreamReader sr = new StreamReader(macAddressFile))
             {
-                if (line.Contains(macPrefix) & line.Contains("(base 16)"))
+                while (!sr.EndOfStream)
                 {
-                    return line.Substring(22);
+                    string line = sr.ReadLine();
+                    if (line.Contains(macPrefix) & line.Contains("(base 16)"))
+                    {
+                        return line.Substring(22);
+                    }
                 }
             }
+            
             return macAddress.Substring(0, 6);
         }
 
